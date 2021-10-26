@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-const SettingProfileScreen = () => {
+const SettingProfileScreen = ({ navigation }) => {
   return (
     <View>
       <Text>this is SettingProfile screen</Text>

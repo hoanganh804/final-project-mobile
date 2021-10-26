@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 
-const MessageScreen = () => {
+const MessageScreen = ({ navigation }) => {
   return (
     <View>
       <Text>this is Message screen</Text>

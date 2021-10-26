@@ -1,15 +1,16 @@
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Button, SafeAreaView, Text, View } from "react-native";
 
 const ProfileScreen = ({ navigation }) => {
   return (
-    <View>
+    <SafeAreaView>
       <Text>this is Profile screen</Text>
       <Button
         title="Setting Profile"
         onPress={() => navigation.navigate("SettingProfile")}
       />
-    </View>
+      <Button title="Log Out" onPress={() => navigation.navigate("Login")} />
+    </SafeAreaView>
   );
 };
 

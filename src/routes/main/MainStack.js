@@ -10,9 +10,9 @@ const MainStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Main"
+        name="MainTab"
         component={MainTab}
-        options={{ headerTitle: "Main" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Message"
