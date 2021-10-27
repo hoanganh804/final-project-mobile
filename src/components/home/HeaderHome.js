@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   logo: {
-    height: 38,
-    width: 100,
+    height: 42,
+    width: 120,
   },
   icon: {
     height: 18,

@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import HomeScreen from "../../screens/main/home/HomeScreen";
 import ProfileScreen from "../../screens/main/profile/ProfileScreen";
+import { Entypo } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 const MainNavigator = () => {
@@ -9,10 +11,35 @@ const MainNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: "#878787",
+        // tabBarInactiveBackgroundColor: "black",
+        // tabBarActiveBackgroundColor: "black",
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: "black",
+          borderTopWidth: 0,
+        },
       }}
     >
-      <Tab.Screen name="HomeTab" component={HomeScreen} />
-      <Tab.Screen name="ProfileTab" component={ProfileScreen} />
+      <Tab.Screen
+        name="HomeTab"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="user-circle" size={size} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

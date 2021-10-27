@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     color: "white",
     height: 105,
-    borderWidth: 0.3,
-    borderBottomColor: "#ccc",
+    borderWidth: 0.25,
+    borderBottomColor: "#fffcfc73",
   },
 });
