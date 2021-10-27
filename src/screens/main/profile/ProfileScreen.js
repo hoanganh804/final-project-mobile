@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, SafeAreaView, Text, View } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../../slices/authSilce";
 
 const ProfileScreen = ({ navigation }) => {
@@ -9,6 +9,9 @@ const ProfileScreen = ({ navigation }) => {
     const action = logoutAction();
     dispatch(action);
   };
+  const usersData = useSelector((state) => state.users);
+  const postsData = useSelector((state) => state.posts);
+  console.log(usersData, postsData);
   return (
     <SafeAreaView>
       <Text>this is Profile screen</Text>
