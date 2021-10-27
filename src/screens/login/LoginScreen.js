@@ -6,6 +6,7 @@ import * as Facebook from "expo-facebook";
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
+
   const login = () => {
     const action = loginAction();
     dispatch(action);
