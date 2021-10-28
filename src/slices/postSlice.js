@@ -24,8 +24,28 @@ const initialState = [
 const postSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    likeAction: (state, action) => {
+      const post = state.filter((post) => post.uid === action.payload.uid);
+      post[0].liked.push(action.payload.currentId);
+    },
+    unLikeAction: (state, action) => {
+      const post = state.filter((post) => post.uid === action.payload.uid);
+      const newLiked = post[0].liked.filter(
+        (like) => like !== action.payload.currentId
+      );
+      return state.map((post) => {
+        if (post.uid === action.payload.uid) {
+          return {
+            ...post,
+            liked: newLiked,
+          };
+        }
+        return post;
+      });
+    },
+  },
 });
 
-export const {} = postSlice.actions;
+export const { likeAction, unLikeAction } = postSlice.actions;
 export default postSlice.reducer;

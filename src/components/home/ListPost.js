@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import PostItem from "./PostItem";
 
 const ListPost = ({ postsData, usersData }) => {
@@ -41,6 +42,7 @@ const ListPost = ({ postsData, usersData }) => {
           liked={item.liked}
           displayName={item.displayName}
           avatar_url={item.avatar_url}
+          uid={item.uid}
         />
       ))}
     </View>

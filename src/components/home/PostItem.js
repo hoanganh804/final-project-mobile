@@ -2,6 +2,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Dimensions } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { likeAction, unLikeAction } from "../../slices/postSlice";
 
 const widthScreen = Dimensions.get("window").width; //full width: ;
 const heightScreen = Dimensions.get("window").height; //full height
@@ -60,10 +62,12 @@ const PostImage = ({ images }) => {
     />
   );
 };
-const PostFooter = ({ liked, description, currentId, displayName }) => {
+const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
   const [isLike, setIsLike] = useState(false);
-
-  const likes = liked.length;
+  const [likes, setLikes] = useState(liked.length);
+  const dispatch = useDispatch();
+  const dataPost = useSelector((state) => state.posts);
+  console.log(dataPost);
 
   useEffect(() => {
     liked.forEach((like) => {
@@ -72,6 +76,18 @@ const PostFooter = ({ liked, description, currentId, displayName }) => {
       }
     });
   }, []);
+
+  const handleLike = (uid, currentId) => {
+    if (isLike) {
+      dispatch(unLikeAction({ uid: uid, currentId: currentId }));
+      setIsLike(false);
+      setLikes(likes - 1);
+    } else {
+      dispatch(likeAction({ uid: uid, currentId: currentId }));
+      setIsLike(true);
+      setLikes(likes + 1);
+    }
+  };
 
   return (
     <View>
@@ -91,7 +107,7 @@ const PostFooter = ({ liked, description, currentId, displayName }) => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleLike(uid, currentId)}>
             {isLike ? (
               <Image
                 style={styles.icon}
@@ -154,6 +170,7 @@ const PostItem = ({
   liked,
   displayName,
   avatar_url,
+  uid,
 }) => {
   return (
     <View style={styles.container}>
@@ -164,6 +181,7 @@ const PostItem = ({
         liked={liked}
         description={description}
         displayName={displayName}
+        uid={uid}
       />
     </View>
   );
