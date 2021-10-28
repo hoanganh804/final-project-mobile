@@ -53,9 +53,9 @@ function HeaderProfile(props) {
         </View>
       </View>
       <View style={styles.containerbody}>
-        <View style={styles.boder}>
+        <LinearGradient colors={["#DE0046", "#F7A34B"]} style={styles.boder}>
           <Image style={styles.img} source={{ uri: user.avatar_url }} />
-        </View>
+        </LinearGradient>
         <View style={styles.arrowcount}>
           <Text style={styles.count}>0</Text>
           <Text style={styles.typecount}>Posts</Text>
@@ -130,12 +130,11 @@ const styles = StyleSheet.create({
     borderRadius: 86 / 2,
   },
   boder: {
-    height: 90,
-    width: 90,
+    height: 91,
+    width: 91,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
-    borderRadius: 90 / 2,
+    borderRadius: 91 / 2,
     marginRight: 20,
   },
 

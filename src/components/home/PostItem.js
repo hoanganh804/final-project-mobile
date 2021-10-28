@@ -47,8 +47,11 @@ const PostImage = ({ images }) => {
   const [heighImage, setHeighImage] = useState(0);
   Image.getSize(images[0], (width, heigh) => {
     let newHeigh = (widthScreen * heigh) / width;
-    if (heigh > width * 1.7) {
-      newHeigh = (widthScreen * heigh) / (width * 1.7);
+    if (heigh > width) {
+      newHeigh = widthScreen;
+    }
+    if (heigh * 1.5 < width) {
+      newHeigh = widthScreen / 1.5;
     }
     setWidthImage(widthScreen);
     setHeighImage(newHeigh);

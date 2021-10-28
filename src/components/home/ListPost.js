@@ -45,6 +45,22 @@ const ListPost = ({ postsData, usersData }) => {
           uid={item.uid}
         />
       ))}
+      {/* <FlatList
+        data={postsDataState}
+        keyExtractor={(item) => item.uid}
+        renderItem={({ item }) => (
+          <PostItem
+            key={item.uid}
+            currentId={currentId}
+            description={item.description}
+            images={item.images}
+            liked={item.liked}
+            displayName={item.displayName}
+            avatar_url={item.avatar_url}
+            uid={item.uid}
+          />
+        )}
+      /> */}
     </View>
   );
 };
