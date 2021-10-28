@@ -3,7 +3,6 @@ import { FlatList, StyleSheet, View } from "react-native";
 import StoryItem from "./StoryItem";
 
 const StoriesBar = ({ usersData }) => {
-  console.log(usersData);
   return (
     <View style={styles.container}>
       <FlatList

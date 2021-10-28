@@ -174,13 +174,16 @@ const PostItem = ({
 }) => {
   return (
     <View style={styles.container}>
-      <PostHeader displayName={displayName} avatar_url={avatar_url} />
+      <PostHeader
+        displayName={displayName && displayName.replace(" ", ".").toLowerCase()}
+        avatar_url={avatar_url}
+      />
       <PostImage images={images} />
       <PostFooter
         currentId={currentId}
         liked={liked}
         description={description}
-        displayName={displayName}
+        displayName={displayName && displayName.replace(" ", ".").toLowerCase()}
         uid={uid}
       />
     </View>

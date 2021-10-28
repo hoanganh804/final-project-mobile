@@ -3,7 +3,7 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 const StoryItem = ({ displayName, avatar_url }) => {
-  const newName = displayName.split(" ")[0];
+  const newName = displayName.replace(" ", ".").toLowerCase();
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -18,7 +18,9 @@ const StoryItem = ({ displayName, avatar_url }) => {
       >
         <Image style={styles.imageStory} source={{ uri: avatar_url }} />
       </LinearGradient>
-      <Text style={{ marginTop: 3, color: "white" }}>{newName}</Text>
+      <Text numberOfLines={1} style={{ marginTop: 3, color: "white" }}>
+        {newName}
+      </Text>
     </View>
   );
 };
