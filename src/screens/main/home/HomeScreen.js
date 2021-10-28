@@ -6,6 +6,8 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  Platform,
+  StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native";
 import { useSelector } from "react-redux";
@@ -36,6 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     color: "white",
     flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   logo: {
     height: 30,

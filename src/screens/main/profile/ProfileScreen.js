@@ -6,6 +6,8 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
+  Platform,
+  StatusBar,
 } from "react-native";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +49,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "black",
     flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   button: {
     borderColor: "#979797",
