@@ -20,10 +20,11 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <HeaderHome navigation={navigation} />
-      <ScrollView>
-        <StoriesBar usersData={usersData} />
-        <ListPost postsData={postsData} usersData={usersData} />
-      </ScrollView>
+      <ListPost
+        postsData={postsData}
+        usersData={usersData}
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
 };

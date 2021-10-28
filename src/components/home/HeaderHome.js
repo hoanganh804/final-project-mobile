@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native";
 
 const HeaderHome = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} fullWidth={true}>
       <Image
         style={styles.logo}
         source={require("../../res/images/logo.png")}

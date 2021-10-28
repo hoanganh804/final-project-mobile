@@ -1,10 +1,14 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import StoryItem from "./StoryItem";
+import { Dimensions } from "react-native";
+
+var width = Dimensions.get("window").width; //full width
+var height = Dimensions.get("window").height; //full height
 
 const StoriesBar = ({ usersData }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} fullWidth={true}>
       <FlatList
         horizontal={true}
         data={usersData}
@@ -29,5 +33,6 @@ const styles = StyleSheet.create({
     height: 105,
     borderWidth: 0.25,
     borderBottomColor: "#fffcfc73",
+    width: width,
   },
 });

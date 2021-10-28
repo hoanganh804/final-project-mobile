@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
+import HeaderHome from "./HeaderHome";
 import PostItem from "./PostItem";
+import StoriesBar from "./StoriesBar";
 
-const ListPost = ({ postsData, usersData }) => {
+const ListPost = ({ postsData, usersData, navigation }) => {
   const currentId = "1";
   const [postsDataState, setPostsDataState] = useState(postsData);
 
@@ -30,24 +32,32 @@ const ListPost = ({ postsData, usersData }) => {
     });
     setPostsDataState(newPostsData);
   }, []);
+  // const [isFetching, setIsFetching] = useState(false);
+  // const hello = () => {
+  //   console.log("hello");
+  //   setIsFetching(true);
+  // };
+  // console.log(isFetching);
+  // const [newPostsDataState, setNewPostsDataState] = useState();
+  // useEffect(() => {
+  //   const newData = postsDataState.slice(4, postsDataState.length - 1);
+  //   setNewPostsDataState(newData);
+  // }, []);
+  // const loadMoreData = () => {
+  //   setNewPostsDataState(postsDataState);
+  // };
+  // console.log(postsDataState);
 
   return (
     <View style={styles.container}>
-      {postsDataState.map((item) => (
-        <PostItem
-          key={item.uid}
-          currentId={currentId}
-          description={item.description}
-          images={item.images}
-          liked={item.liked}
-          displayName={item.displayName}
-          avatar_url={item.avatar_url}
-          uid={item.uid}
-        />
-      ))}
-      {/* <FlatList
+      <FlatList
+        ListHeaderComponent={<StoriesBar usersData={usersData} />}
         data={postsDataState}
         keyExtractor={(item) => item.uid}
+        // onRefresh={hello}
+        // refreshing={isFetching}
+        // onEndReached={loadMoreData}
+        // onEndReachedThreshold={0}
         renderItem={({ item }) => (
           <PostItem
             key={item.uid}
@@ -60,7 +70,7 @@ const ListPost = ({ postsData, usersData }) => {
             uid={item.uid}
           />
         )}
-      /> */}
+      />
     </View>
   );
 };

@@ -43,22 +43,23 @@ const PostHeader = ({ displayName, avatar_url }) => {
   );
 };
 const PostImage = ({ images }) => {
-  const [widthImage, setWidthImage] = useState(0);
-  const [heighImage, setHeighImage] = useState(0);
-  Image.getSize(images[0], (width, heigh) => {
-    let newHeigh = (widthScreen * heigh) / width;
-    if (heigh > width) {
-      newHeigh = widthScreen;
-    }
-    if (heigh * 1.5 < width) {
-      newHeigh = widthScreen / 1.5;
-    }
-    setWidthImage(widthScreen);
-    setHeighImage(newHeigh);
-  });
+  const [heighImage, setHeighImage] = useState(widthScreen);
+  useEffect(() => {
+    Image.getSize(images[0], (width, heigh) => {
+      let newHeigh = (widthScreen * heigh) / width;
+      if (heigh > width) {
+        newHeigh = widthScreen;
+      }
+      if (heigh * 1.5 < width) {
+        newHeigh = widthScreen / 1.5;
+      }
+
+      setHeighImage(newHeigh);
+    });
+  }, []);
   return (
     <Image
-      style={{ width: widthImage, height: heighImage }}
+      style={{ width: widthScreen, height: heighImage }}
       source={{
         uri: images[0],
       }}
@@ -69,8 +70,6 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
   const dispatch = useDispatch();
-  const dataPost = useSelector((state) => state.posts);
-  console.log(dataPost);
 
   useEffect(() => {
     liked.forEach((like) => {
