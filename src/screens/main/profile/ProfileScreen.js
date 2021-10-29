@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   SafeAreaView,
@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Platform,
   StatusBar,
+  ScrollView,
 } from "react-native";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,26 +22,36 @@ const ProfileScreen = ({ navigation }) => {
   const currentId = "1";
   const usersData = useSelector((state) => state.users);
   const postsData = useSelector((state) => state.posts);
-  let User = {};
-  let post = {};
-  for (let i = 0; i < usersData.length; i++) {
-    if (usersData[i].uid === currentId) {
-      User = usersData[i];
-      post = postsData[i];
-    }
-  }
+  const[user,setUser]=useState({});
+  
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderProfile user={User} currentId={currentId}></HeaderProfile>
+      <ScrollView>
+      {
+        usersData.map(item=>{
+          if(item.uid==currentId){
+            console.log(item);
+            return  <HeaderProfile user={item} currentId={currentId}></HeaderProfile>
+          }
+        })
+      }
+     
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("SettingProfile")}
       >
         <Text style={styles.buttonText}>Edit Profile</Text>
       </TouchableOpacity>
-      <Story post={post}></Story>
-      <RenderImg post={post} currentId={currentId}></RenderImg>
+      {
+        usersData.map(item=>{
+          if(item.uid==currentId){
+            return <Story post={postsData} currentId={currentId}></Story>
+          }
+        })
+      }
+      <RenderImg post={postsData} currentId={currentId}></RenderImg>
+      </ScrollView>
     </SafeAreaView>
   );
 };
