@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { StatusBar, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { Provider } from "react-redux";
 import AppNavigator from "./src/routes/AppNavigator";
@@ -9,6 +9,10 @@ import LoginScreen from "./src/screens/login/LoginScreen";
 import store from "./store";
 
 export default function App() {
+  useEffect(() => {
+    StatusBar.setBarStyle("light-content", true);
+  }, []);
+
   return (
     <Provider store={store}>
       <AppNavigator />

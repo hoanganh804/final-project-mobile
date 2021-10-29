@@ -4,6 +4,7 @@ import HomeScreen from "../../screens/main/home/HomeScreen";
 import ProfileScreen from "../../screens/main/profile/ProfileScreen";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { StatusBar, View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const MainNavigator = () => {

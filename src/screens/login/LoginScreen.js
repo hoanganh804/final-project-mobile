@@ -45,7 +45,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <Text>this is login screen</Text>
+      <Text style={{ color: "white" }}>this is login screen</Text>
       <Button title="Login" onPress={() => login()} />
       <Button title="Login Facebook" onPress={() => loginFaceBook()} />
     </SafeAreaView>
@@ -57,7 +57,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "black",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });

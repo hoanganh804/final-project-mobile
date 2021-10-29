@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { StatusBar, View } from "react-native";
 import CreatePostScreen from "../../screens/main/createPost/CreatePostScreen";
 import MessageScreen from "../../screens/main/message/MessageScreen";
 import SettingProfileScreen from "../../screens/main/profile/SettingProfileScreen";
