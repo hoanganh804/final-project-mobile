@@ -11,9 +11,11 @@ import {
   Text,
   View,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import firebase, { db } from "../../firebase/config";
 import { addDocument } from "../../firebase/services";
+import { AntDesign } from '@expo/vector-icons'; 
 
 const LoginScreen = () => {
   const loginWithPassword = (email, password) => {
@@ -95,11 +97,27 @@ const LoginScreen = () => {
           placeholder={"PassWord"}
           placeholderTextColor="white"
           ></TextInput>
-        <Button
-          title="Login"
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => loginWithPassword("anhhk101@gmail.com", "123456")}
-        />
-        <Button title="Login Facebook" onPress={() => loginFaceBook()} />
+        >
+          <Text style={styles.text}>Log in</Text>
+        </TouchableOpacity>
+        <View style={styles.forgot}>
+          <Text style={styles.forgotthin}>Forgot your login details?</Text>
+          <Text style={styles.forgotbold}> Get help signing in.</Text>
+        </View>
+        <View style={styles.wrapor}>
+          <View style={styles.line}></View>
+          <Text style={styles.or}>OR</Text>
+          <View style={styles.line}></View>
+        </View>
+        <TouchableOpacity 
+          style={styles.buttonface}
+          onPress={() => loginFaceBook()}>
+            <AntDesign name="facebook-square" size={24} color="white" />
+            <Text style={styles.textface}>Login in with Facebook</Text>
+        </TouchableOpacity>
       </View>
       
       
@@ -110,8 +128,63 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  textface:{
+    color: "white",
+    marginLeft:10,
+    fontWeight:'bold',
+    fontSize:15,
+  },
+  buttonface:{
+    height:40,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  forgot:{
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  forgotthin:{
+    color: "white",
+  },
+  forgotbold:{
+    color: "white",
+    fontWeight: "bold",
+  },
+  or:{
+    color: "white",
+    position:'relative',
+    top:9,
+  },
+  line:{
+    borderBottomWidth:1,
+    flex:1,
+    borderColor:'white',
+    marginLeft:10,
+    marginRight:10,
+    opacity:0.5,
+  },
+  wrapor:{
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom:20,
+  },
+  text:{
+    fontSize:15,
+    fontWeight:'bold',
+  },
   form:{
     margin:20,
+  },
+  button:{
+    backgroundColor: "white",
+    height:40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius:5,
+    marginBottom: 20,
   },
   input:{
     borderRadius:5,
@@ -120,7 +193,7 @@ const styles = StyleSheet.create({
     borderWidth:1,
     height:40,
     fontSize:15,
-    marginBottom: 14,
+    marginBottom: 20,
     paddingLeft:13,
   },
   icon:{
