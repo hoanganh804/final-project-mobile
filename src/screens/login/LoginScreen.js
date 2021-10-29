@@ -90,12 +90,12 @@ const LoginScreen = () => {
         <TextInput 
           style={styles.input} 
           placeholder={"UserName"}
-          placeholderTextColor="white"
+          placeholderTextColor="grey"
           ></TextInput>
         <TextInput 
           style={styles.input} 
           placeholder={"PassWord"}
-          placeholderTextColor="white"
+          placeholderTextColor="grey"
           ></TextInput>
         <TouchableOpacity
           style={styles.button}
@@ -104,8 +104,9 @@ const LoginScreen = () => {
           <Text style={styles.text}>Log in</Text>
         </TouchableOpacity>
         <View style={styles.forgot}>
-          <Text style={styles.forgotthin}>Forgot your login details?</Text>
-          <Text style={styles.forgotbold}> Get help signing in.</Text>
+          <Text style={styles.forgotthin}>If you don't have account?</Text>
+          <Text style={styles.forgotbold}> Register</Text>
+          <Text style={styles.forgotthin}> now.</Text>
         </View>
         <View style={styles.wrapor}>
           <View style={styles.line}></View>
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
   line:{
     borderBottomWidth:1,
     flex:1,
-    borderColor:'white',
+    borderColor:'rgba(246, 242, 242, 0.18)',
     marginLeft:10,
     marginRight:10,
     opacity:0.5,
@@ -173,13 +174,14 @@ const styles = StyleSheet.create({
   },
   text:{
     fontSize:15,
+    color: "white",
     fontWeight:'bold',
   },
   form:{
     margin:20,
   },
   button:{
-    backgroundColor: "white",
+    backgroundColor: 'rgba(246, 242, 242, 0.18)',
     height:40,
     justifyContent: "center",
     alignItems: "center",
@@ -188,13 +190,12 @@ const styles = StyleSheet.create({
   },
   input:{
     borderRadius:5,
-    color:'white',
-    borderColor:'white',
-    borderWidth:1,
+    color:'black',
     height:40,
     fontSize:15,
     marginBottom: 20,
     paddingLeft:13,
+    backgroundColor:'rgba(246, 242, 242, 0.18)',
   },
   icon:{
     width:300,
