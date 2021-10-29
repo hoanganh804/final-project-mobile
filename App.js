@@ -11,6 +11,7 @@ import store from "./store";
 export default function App() {
   useEffect(() => {
     StatusBar.setBarStyle("light-content", true);
+    StatusBar.setBackgroundColor("black", true);
   }, []);
 
   return (
