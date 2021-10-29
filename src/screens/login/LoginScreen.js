@@ -15,11 +15,15 @@ import {
 } from "react-native";
 import firebase, { db } from "../../firebase/config";
 import { addDocument } from "../../firebase/services";
-import { AntDesign } from '@expo/vector-icons'; 
+import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
 
 const LoginScreen = () => {
-  const loginWithPassword = (email, password) => {
-    firebase
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginWithPassword = async (email, password) => {
+    await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -30,7 +34,9 @@ const LoginScreen = () => {
           displayName: displayName,
           avatar_url: photoURL,
           email: email,
+          descriptionUser: "",
         };
+        console.log("login success");
         if (isNewUser) {
           addDocument("users", dataUser);
         }
@@ -38,6 +44,9 @@ const LoginScreen = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        Alert.alert("Email or password wrong !");
+        setEmail("");
+        setPassword("");
         console.log("login with email fail", errorMessage);
       });
   };
@@ -51,7 +60,9 @@ const LoginScreen = () => {
         permissions: ["public_profile"],
       });
       if (type === "success") {
-        const credential = firebase.auth.FacebookAuthProvider.credential(token);
+        const credential = await firebase.auth.FacebookAuthProvider.credential(
+          token
+        );
         firebase
           .auth()
           .signInWithCredential(credential)
@@ -63,6 +74,8 @@ const LoginScreen = () => {
               displayName: displayName,
               avatar_url: photoURL,
               email: email,
+              descriptionUser: "",
+              username: displayName.replace(" ", ".").toLowerCase(),
             };
 
             if (isNewUser) {
@@ -84,22 +97,30 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <View style={styles.wrapicon}>
-        <Image style={styles.icon} source={require('../../res/images/loginicon.png')}/>
+        <Image
+          style={styles.icon}
+          source={require("../../res/images/loginicon.png")}
+        />
       </View>
       <View style={styles.form}>
-        <TextInput 
-          style={styles.input} 
-          placeholder={"UserName"}
+        <TextInput
+          style={styles.input}
+          placeholder={"Username or email"}
           placeholderTextColor="grey"
-          ></TextInput>
-        <TextInput 
-          style={styles.input} 
-          placeholder={"PassWord"}
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        ></TextInput>
+        <TextInput
+          style={styles.input}
+          placeholder={"Password"}
           placeholderTextColor="grey"
-          ></TextInput>
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={true}
+        ></TextInput>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => loginWithPassword("anhhk101@gmail.com", "123456")}
+          onPress={() => loginWithPassword(email, password)}
         >
           <Text style={styles.text}>Log in</Text>
         </TouchableOpacity>
@@ -113,15 +134,14 @@ const LoginScreen = () => {
           <Text style={styles.or}>OR</Text>
           <View style={styles.line}></View>
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.buttonface}
-          onPress={() => loginFaceBook()}>
-            <AntDesign name="facebook-square" size={24} color="white" />
-            <Text style={styles.textface}>Login in with Facebook</Text>
+          onPress={() => loginFaceBook()}
+        >
+          <AntDesign name="facebook-square" size={24} color="white" />
+          <Text style={styles.textface}>Login in with Facebook</Text>
         </TouchableOpacity>
       </View>
-      
-      
     </SafeAreaView>
   );
 };
@@ -129,81 +149,80 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  textface:{
+  textface: {
     color: "white",
-    marginLeft:10,
-    fontWeight:'bold',
-    fontSize:15,
+    marginLeft: 10,
+    fontWeight: "bold",
+    fontSize: 15,
   },
-  buttonface:{
-    height:40,
+  buttonface: {
+    height: 40,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
   },
-  forgot:{
+  forgot: {
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: 10,
   },
-  forgotthin:{
+  forgotthin: {
     color: "white",
   },
-  forgotbold:{
+  forgotbold: {
     color: "white",
     fontWeight: "bold",
   },
-  or:{
+  or: {
     color: "white",
-    position:'relative',
-    top:9,
+    position: "relative",
+    top: 9,
   },
-  line:{
-    borderBottomWidth:1,
-    flex:1,
-    borderColor:'rgba(246, 242, 242, 0.18)',
-    marginLeft:10,
-    marginRight:10,
-    opacity:0.5,
+  line: {
+    borderBottomWidth: 1,
+    flex: 1,
+    borderColor: "white",
+
+    opacity: 0.5,
   },
-  wrapor:{
+  wrapor: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom:20,
+    marginBottom: 20,
   },
-  text:{
-    fontSize:15,
+  text: {
+    fontSize: 15,
     color: "white",
-    fontWeight:'bold',
+    fontWeight: "bold",
   },
-  form:{
-    margin:20,
+  form: {
+    margin: 20,
   },
-  button:{
-    backgroundColor: 'rgba(246, 242, 242, 0.18)',
-    height:40,
+  button: {
+    backgroundColor: "rgba(246, 242, 242, 0.28)",
+    height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius:5,
+    borderRadius: 3,
     marginBottom: 20,
   },
-  input:{
-    borderRadius:5,
-    color:'black',
-    height:40,
-    fontSize:15,
+  input: {
+    borderRadius: 3,
+    color: "white",
+    height: 40,
+    fontSize: 14,
     marginBottom: 20,
-    paddingLeft:13,
-    backgroundColor:'rgba(246, 242, 242, 0.18)',
+    paddingLeft: 13,
+    backgroundColor: "rgba(246, 242, 242, 0.18)",
   },
-  icon:{
-    width:300,
-    height:300,
+  icon: {
+    width: 300,
+    height: 300,
   },
-  wrapicon:{
+  wrapicon: {
     flexDirection: "row",
-    height:300,
+    height: 300,
     justifyContent: "center",
   },
   AndroidSafeArea: {
