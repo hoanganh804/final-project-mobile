@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     color: "white",
     position: "relative",
     top: 9,
+    marginHorizontal: 6,
   },
   line: {
     borderBottomWidth: 1,
