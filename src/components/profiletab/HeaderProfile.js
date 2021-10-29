@@ -17,15 +17,9 @@ HeaderProfile.propTypes = {};
 
 function HeaderProfile(props) {
   const { user, post, currentId, navigation } = props;
-  const dispatch = useDispatch();
-  const logout = () => {
-    const action = logoutAction();
-    dispatch(action);
-  };
 
   return (
     <>
-      
       <View style={styles.containerbody}>
         <LinearGradient colors={["#DE0046", "#F7A34B"]} style={styles.boder}>
           <Image style={styles.img} source={{ uri: user.avatar_url }} />
