@@ -35,7 +35,7 @@ function RenderImg(props) {
       <View style={styles.listview}>
         {post.map(item=>{
           if(item.ownerId==currentId){
-            return(<TouchableOpacity>
+            return(<TouchableOpacity style={styles.wrapimg}>
               <Image style={styles.img} source={{ uri: item.images[0]}} />
             </TouchableOpacity>)
           }
@@ -45,10 +45,13 @@ function RenderImg(props) {
   );
 }
 const styles = StyleSheet.create({
+  wrapimg:{
+    width:'33.33%',
+    padding:1,
+  },
   img: {
-    height: 138,
-    width: 138,
-    margin: 1,
+    width:'100%',
+    padding:'50%',
   },
   container: {
     flex: 1,
