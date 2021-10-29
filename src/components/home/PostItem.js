@@ -4,9 +4,9 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Dimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { likeAction, unLikeAction } from "../../slices/postSlice";
+import PostImage from "./PostImage";
 
 const widthScreen = Dimensions.get("window").width; //full width: ;
-const heightScreen = Dimensions.get("window").height; //full height
 
 const PostHeader = ({ displayName, avatar_url }) => {
   return (
@@ -42,30 +42,7 @@ const PostHeader = ({ displayName, avatar_url }) => {
     </View>
   );
 };
-const PostImage = ({ images }) => {
-  const [heighImage, setHeighImage] = useState(widthScreen);
-  useEffect(() => {
-    Image.getSize(images[0], (width, heigh) => {
-      let newHeigh = (widthScreen * heigh) / width;
-      if (heigh > width) {
-        newHeigh = widthScreen;
-      }
-      if (heigh * 1.5 < width) {
-        newHeigh = widthScreen / 1.5;
-      }
 
-      setHeighImage(newHeigh);
-    });
-  }, []);
-  return (
-    <Image
-      style={{ width: widthScreen, height: heighImage }}
-      source={{
-        uri: images[0],
-      }}
-    />
-  );
-};
 const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
