@@ -7,6 +7,10 @@ import AppNavigator from "./src/routes/AppNavigator";
 import MainStack from "./src/routes/main/MainStack";
 import LoginScreen from "./src/screens/login/LoginScreen";
 import store from "./store";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["Setting a timer"]);
+LogBox.ignoreLogs(["AsyncStorage has been extracted"]);
 
 export default function App() {
   useEffect(() => {

@@ -1,20 +1,43 @@
-import React, { useEffect } from "react";
-import { Alert, Button, SafeAreaView, Text } from "react-native";
-import { useDispatch } from "react-redux";
-import { loginAction } from "../../slices/authSilce";
 import * as Facebook from "expo-facebook";
-import firebase from "../../firebase/firebase";
-import { StyleSheet, Platform, StatusBar } from "react-native";
+import React from "react";
+import {
+  Alert,
+  Button,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+} from "react-native";
+import firebase, { db } from "../../firebase/config";
+import { addDocument } from "../../firebase/services";
 
 const LoginScreen = () => {
-  const dispatch = useDispatch();
-
-  const login = () => {
-    const action = loginAction();
-    dispatch(action);
+  const loginWithPassword = (email, password) => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        const { displayName, email, photoURL } = userCredential.user;
+        const { isNewUser } = userCredential.additionalUserInfo;
+        const dataUser = {
+          displayName: displayName,
+          avatar_url: photoURL,
+          email: email,
+        };
+        if (isNewUser) {
+          addDocument("users", dataUser);
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("login with email fail", errorMessage);
+      });
   };
 
-  async function loginFaceBook() {
+  const loginFaceBook = async () => {
     try {
       await Facebook.initializeAsync({
         appId: "171413448445007",
@@ -29,7 +52,17 @@ const LoginScreen = () => {
           .signInWithCredential(credential)
           .then((user) => {
             // All the details about user are in here returned from firebase
-            console.log("Logged in successfully", user);
+            const { displayName, email, photoURL } = user.user;
+            const { isNewUser } = user.additionalUserInfo;
+            const dataUser = {
+              displayName: displayName,
+              avatar_url: photoURL,
+              email: email,
+            };
+
+            if (isNewUser) {
+              addDocument("users", dataUser);
+            }
           })
           .catch((error) => {
             console.log("Error occurred ", error);
@@ -41,12 +74,15 @@ const LoginScreen = () => {
     } catch ({ message }) {
       Alert.alert(`Facebook Login Error: ${message}`);
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <Text style={{ color: "white" }}>this is login screen</Text>
-      <Button title="Login" onPress={() => login()} />
+      <Button
+        title="Login"
+        onPress={() => loginWithPassword("anhhk101@gmail.com", "123456")}
+      />
       <Button title="Login Facebook" onPress={() => loginFaceBook()} />
     </SafeAreaView>
   );
