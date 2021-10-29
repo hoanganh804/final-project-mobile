@@ -14,7 +14,7 @@ const LoginScreen = () => {
     dispatch(action);
   };
 
-  async function logInFaceBook() {
+  async function loginFaceBook() {
     try {
       await Facebook.initializeAsync({
         appId: "171413448445007",
@@ -46,7 +46,8 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <Text>this is login screen</Text>
-      <Button title="Login Facebook" onPress={() => login()} />
+      <Button title="Login" onPress={() => login()} />
+      <Button title="Login Facebook" onPress={() => loginFaceBook()} />
     </SafeAreaView>
   );
 };
