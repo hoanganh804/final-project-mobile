@@ -12,6 +12,9 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import firebase, { db } from "../../firebase/config";
 import { addDocument } from "../../firebase/services";
@@ -96,52 +99,63 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <View style={styles.wrapicon}>
-        <Image
-          style={styles.icon}
-          source={require("../../res/images/loginicon.png")}
-        />
-      </View>
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder={"Username or email"}
-          placeholderTextColor="grey"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        ></TextInput>
-        <TextInput
-          style={styles.input}
-          placeholder={"Password"}
-          placeholderTextColor="grey"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry={true}
-        ></TextInput>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => loginWithPassword(email, password)}
-        >
-          <Text style={styles.text}>Log in</Text>
-        </TouchableOpacity>
-        <View style={styles.forgot}>
-          <Text style={styles.forgotthin}>If you don't have account?</Text>
-          <Text style={styles.forgotbold}> Register</Text>
-          <Text style={styles.forgotthin}> now.</Text>
-        </View>
-        <View style={styles.wrapor}>
-          <View style={styles.line}></View>
-          <Text style={styles.or}>OR</Text>
-          <View style={styles.line}></View>
-        </View>
-        <TouchableOpacity
-          style={styles.buttonface}
-          onPress={() => loginFaceBook()}
-        >
-          <AntDesign name="facebook-square" size={24} color="white" />
-          <Text style={styles.textface}>Login in with Facebook</Text>
-        </TouchableOpacity>
-      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.wrapicon}>
+              <Image
+                style={styles.icon}
+                source={require("../../res/images/loginicon.png")}
+              />
+            </View>
+            <View style={styles.form}>
+              <TextInput
+                style={styles.input}
+                placeholder={"Username or email"}
+                placeholderTextColor="grey"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+              ></TextInput>
+              <TextInput
+                style={styles.input}
+                placeholder={"Password"}
+                placeholderTextColor="grey"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                secureTextEntry={true}
+              ></TextInput>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => loginWithPassword(email, password)}
+              >
+                <Text style={styles.text}>Log in</Text>
+              </TouchableOpacity>
+              <View style={styles.forgot}>
+                <Text style={styles.forgotthin}>
+                  If you don't have account?
+                </Text>
+                <Text style={styles.forgotbold}> Register</Text>
+                <Text style={styles.forgotthin}> now.</Text>
+              </View>
+              <View style={styles.wrapor}>
+                <View style={styles.line}></View>
+                <Text style={styles.or}>OR</Text>
+                <View style={styles.line}></View>
+              </View>
+              <TouchableOpacity
+                style={styles.buttonface}
+                onPress={() => loginFaceBook()}
+              >
+                <AntDesign name="facebook-square" size={24} color="white" />
+                <Text style={styles.textface}>Login in with Facebook</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -149,6 +163,9 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   textface: {
     color: "white",
     marginLeft: 10,
