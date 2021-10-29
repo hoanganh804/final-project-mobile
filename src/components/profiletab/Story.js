@@ -18,25 +18,25 @@ function Story(props) {
     <View style={styles.container}>
       <View>
         <View style={styles.boder}>
-          <Image style={styles.img} source={{ uri: 'a' }} />
+          <Image style={styles.img} source={{ uri: post.images[0] }} />
         </View>
         <Text style={styles.text}>Story 1</Text>
       </View>
       <View>
         <View style={styles.boder}>
-          <Image style={styles.img} source={{ uri: 'a' }} />
+          <Image style={styles.img} source={{ uri: post.images[0] }} />
         </View>
         <Text style={styles.text}>Story 2</Text>
       </View>
       <View>
         <View style={styles.boder}>
-          <Image style={styles.img} source={{  uri: 'a' }} />
+          <Image style={styles.img} source={{ uri: post.images[0] }} />
         </View>
         <Text style={styles.text}>Story 3</Text>
       </View>
       <View>
         <View style={styles.boder}>
-          <Image style={styles.img} source={{  uri: 'a' }} />
+          <Image style={styles.img} source={{ uri: post.images[0] }} />
         </View>
         <Text style={styles.text}>Story 4</Text>
       </View>

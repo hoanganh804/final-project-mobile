@@ -22,10 +22,11 @@ const ProfileScreen = ({ navigation }) => {
   const usersData = useSelector((state) => state.users);
   const postsData = useSelector((state) => state.posts);
   let User = {};
- 
+  let post = {};
   for (let i = 0; i < usersData.length; i++) {
     if (usersData[i].uid === currentId) {
       User = usersData[i];
+      post = postsData[i];
     }
   }
 
@@ -38,8 +39,8 @@ const ProfileScreen = ({ navigation }) => {
       >
         <Text style={styles.buttonText}>Edit Profile</Text>
       </TouchableOpacity>
-      <Story post={postsData}></Story>
-      <RenderImg post={postsData} currentId={currentId}></RenderImg>
+      <Story post={post}></Story>
+      <RenderImg post={post} currentId={currentId}></RenderImg>
     </SafeAreaView>
   );
 };
