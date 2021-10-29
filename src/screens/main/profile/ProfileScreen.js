@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../../slices/authSilce";
 import { AntDesign } from "@expo/vector-icons";
 import HeaderProfile from "../../../components/profiletab/HeaderProfile";
+import Infro from "../../../components/profiletab/Infro";
 import Story from "../../../components/profiletab/Story";
 import RenderImg from "../../../components/profiletab/RenderImg";
 
@@ -27,8 +28,17 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+    
       {
+        usersData.map(item=>{
+          if(item.uid==currentId){
+            console.log(item);
+            return  <Infro user={item} currentId={currentId}></Infro>
+          }
+        })
+      }
+      <ScrollView>
+       {
         usersData.map(item=>{
           if(item.uid==currentId){
             console.log(item);
@@ -36,7 +46,6 @@ const ProfileScreen = ({ navigation }) => {
           }
         })
       }
-     
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("SettingProfile")}

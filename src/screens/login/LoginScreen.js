@@ -3,11 +3,14 @@ import React from "react";
 import {
   Alert,
   Button,
+  Image,
   Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
+  View,
+  TextInput,
 } from "react-native";
 import firebase, { db } from "../../firebase/config";
 import { addDocument } from "../../firebase/services";
@@ -78,12 +81,28 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <Text style={{ color: "white" }}>this is login screen</Text>
-      <Button
-        title="Login"
-        onPress={() => loginWithPassword("anhhk101@gmail.com", "123456")}
-      />
-      <Button title="Login Facebook" onPress={() => loginFaceBook()} />
+      <View style={styles.wrapicon}>
+        <Image style={styles.icon} source={require('../../res/images/loginicon.png')}/>
+      </View>
+      <View style={styles.form}>
+        <TextInput 
+          style={styles.input} 
+          placeholder={"UserName"}
+          placeholderTextColor="white"
+          ></TextInput>
+        <TextInput 
+          style={styles.input} 
+          placeholder={"PassWord"}
+          placeholderTextColor="white"
+          ></TextInput>
+        <Button
+          title="Login"
+          onPress={() => loginWithPassword("anhhk101@gmail.com", "123456")}
+        />
+        <Button title="Login Facebook" onPress={() => loginFaceBook()} />
+      </View>
+      
+      
     </SafeAreaView>
   );
 };
@@ -91,6 +110,28 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  form:{
+    margin:20,
+  },
+  input:{
+    borderRadius:5,
+    color:'white',
+    borderColor:'white',
+    borderWidth:1,
+    height:40,
+    fontSize:15,
+    marginBottom: 14,
+    paddingLeft:13,
+  },
+  icon:{
+    width:300,
+    height:300,
+  },
+  wrapicon:{
+    flexDirection: "row",
+    height:300,
+    justifyContent: "center",
+  },
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "black",

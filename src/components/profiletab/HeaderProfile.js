@@ -25,33 +25,7 @@ function HeaderProfile(props) {
 
   return (
     <>
-      <View style={styles.containertop}>
-        <TouchableOpacity style={styles.containerleft}>
-          <Text style={styles.text}>
-            {user.displayName.replace(" ", ".").toLowerCase()}
-          </Text>
-          <AntDesign
-            style={styles.icondown}
-            name="down"
-            size={14}
-            color="white"
-          />
-        </TouchableOpacity>
-        <View style={styles.containerright}>
-          <TouchableOpacity style={styles.addIcon}>
-            <Image
-              style={styles.iconAdd}
-              source={require("../../res/images/addIcon.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={logout}>
-            <Image
-              style={styles.icon}
-              source={require("../../res/images/list3.png")}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
+      
       <View style={styles.containerbody}>
         <LinearGradient colors={["#DE0046", "#F7A34B"]} style={styles.boder}>
           <Image style={styles.img} source={{ uri: user.avatar_url }} />
