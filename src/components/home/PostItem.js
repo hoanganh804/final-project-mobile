@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Dimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { db } from "../../firebase/config";
 import { likeAction, unLikeAction } from "../../slices/postSlice";
 import PostImage from "./PostImage";
 
@@ -43,7 +44,7 @@ const PostHeader = ({ username, avatar_url }) => {
   );
 };
 
-const PostFooter = ({ liked, description, currentId, username, uid }) => {
+const PostFooter = ({ liked, description, currentId, username, id }) => {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
   const dispatch = useDispatch();
@@ -54,17 +55,24 @@ const PostFooter = ({ liked, description, currentId, username, uid }) => {
         setIsLike(true);
       }
     });
-  }, []);
+  }, [liked]);
 
-  const handleLike = (uid, currentId) => {
+  useEffect(() => {
+    const likeNumber = liked.length;
+    setLikes(likeNumber);
+  }, [liked]);
+
+  const handleLike = (id, currentId) => {
     if (isLike) {
-      dispatch(unLikeAction({ uid: uid, currentId: currentId }));
+      const newLiked = [...liked];
+      const newRemoveLike = newLiked.filter((like) => like !== currentId);
+      db.collection("posts").doc(id).update({ liked: newRemoveLike });
       setIsLike(false);
-      setLikes(likes - 1);
     } else {
-      dispatch(likeAction({ uid: uid, currentId: currentId }));
+      const newAddLike = [...liked];
+      newAddLike.push(currentId);
+      db.collection("posts").doc(id).update({ liked: newAddLike });
       setIsLike(true);
-      setLikes(likes + 1);
     }
   };
 
@@ -87,7 +95,7 @@ const PostFooter = ({ liked, description, currentId, username, uid }) => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity onPress={() => handleLike(uid, currentId)}>
+          <TouchableOpacity onPress={() => handleLike(id, currentId)}>
             {isLike ? (
               <Image
                 style={styles.icon}
@@ -150,7 +158,7 @@ const PostItem = ({
   liked,
   username,
   avatar_url,
-  uid,
+  id,
 }) => {
   return (
     <View style={styles.container}>
@@ -161,7 +169,7 @@ const PostItem = ({
         liked={liked}
         description={description}
         username={username}
-        uid={uid}
+        id={id}
       />
     </View>
   );

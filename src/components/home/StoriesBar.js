@@ -12,7 +12,7 @@ const StoriesBar = ({ usersData }) => {
       <FlatList
         horizontal={true}
         data={usersData}
-        keyExtractor={(item) => item.uid}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <StoryItem avatar_url={item.avatar_url} username={item.username} />
         )}

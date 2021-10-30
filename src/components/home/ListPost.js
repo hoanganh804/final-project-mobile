@@ -49,6 +49,7 @@ const ListPost = ({ postsData, usersData }) => {
   //   setNewPostsDataState(postsDataState);
   // };
   // console.log(postsDataState);
+  console.log(postsDataState);
 
   return (
     <View style={styles.container}>
@@ -62,14 +63,13 @@ const ListPost = ({ postsData, usersData }) => {
         // onEndReachedThreshold={0}
         renderItem={({ item }) => (
           <PostItem
-            key={item.uid}
             currentId={currentId}
             description={item.description}
             images={item.images}
             liked={item.liked}
             username={item.username}
             avatar_url={item.avatar_url}
-            uid={item.uid}
+            id={item.id}
           />
         )}
       />
