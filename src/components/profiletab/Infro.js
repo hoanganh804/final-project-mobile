@@ -24,13 +24,11 @@ function Infro(props) {
       .then(() => console.log("logout success"))
       .catch((err) => console.log(err));
   };
-
+  console.log(user);
   return (
     <View style={styles.containertop}>
       <TouchableOpacity style={styles.containerleft}>
-        <Text style={styles.text}>
-          {user.displayName.replace(" ", ".").toLowerCase()}
-        </Text>
+        <Text style={styles.text}>{user.username}</Text>
         <AntDesign
           style={styles.icondown}
           name="down"

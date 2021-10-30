@@ -8,6 +8,14 @@ export const addDocument = (collection, data) => {
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
 };
+export const setDocument = (collection, id, data) => {
+  const query = db.collection(collection);
+
+  query.doc(id).set({
+    ...data,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+};
 
 // tao keywords cho displayName, su dung cho search
 export const generateKeywords = (displayName) => {

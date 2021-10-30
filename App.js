@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { StatusBar, StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { Provider } from "react-redux";
 import AppNavigator from "./src/routes/AppNavigator";
@@ -15,7 +15,7 @@ LogBox.ignoreLogs(["AsyncStorage has been extracted"]);
 export default function App() {
   useEffect(() => {
     StatusBar.setBarStyle("light-content", true);
-    StatusBar.setBackgroundColor("black", true);
+    Platform.OS === "android" && StatusBar.setBackgroundColor("black", true);
   }, []);
 
   return (

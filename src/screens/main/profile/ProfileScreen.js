@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   SafeAreaView,
@@ -20,51 +20,40 @@ import Story from "../../../components/profiletab/Story";
 import RenderImg from "../../../components/profiletab/RenderImg";
 
 const ProfileScreen = ({ navigation }) => {
-  const currentId = "1";
+  const currentId = useSelector((state) => state.auth.currentId);
   const usersData = useSelector((state) => state.users);
   const postsData = useSelector((state) => state.posts);
-  const[user,setUser]=useState({});
-  
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    const currentUser = usersData.filter((user) => user.id === currentId);
+    const newUser = currentUser[0];
+    setCurrentUser(newUser);
+  }, [usersData]);
 
   return (
     <SafeAreaView style={styles.container}>
-    
-      {
-        usersData.map(item=>{
-          if(item.uid==currentId){
-            return  <Infro user={item} currentId={currentId}></Infro>
-          }
-        })
-      }
+      <Infro user={currentUser} currentId={currentId}></Infro>
       <ScrollView>
-       {
-        usersData.map(item=>{
-          if(item.uid==currentId){
-            return  <HeaderProfile user={item} currentId={currentId}></HeaderProfile>
+        <HeaderProfile user={currentUser} currentId={currentId}></HeaderProfile>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("SettingProfile", currentUser)}
+        >
+          <Text style={styles.buttonText}>Edit Profile</Text>
+        </TouchableOpacity>
+        {usersData.map((item) => {
+          if (item.id == currentId) {
+            return (
+              <Story
+                key={item.id}
+                post={postsData}
+                currentId={currentId}
+              ></Story>
+            );
           }
-        })
-      }
-      {
-        usersData.map(item=>{
-          if(item.uid==currentId){
-            return  (<TouchableOpacity
-                      style={styles.button}
-                      onPress={() => navigation.navigate("SettingProfile",item)}
-                    >
-                      <Text style={styles.buttonText}>Edit Profile</Text>
-                    </TouchableOpacity>)
-          }
-        })
-      }
-      
-      {
-        usersData.map(item=>{
-          if(item.uid==currentId){
-            return <Story post={postsData} currentId={currentId}></Story>
-          }
-        })
-      }
-      <RenderImg post={postsData} currentId={currentId}></RenderImg>
+        })}
+        <RenderImg post={postsData} currentId={currentId}></RenderImg>
       </ScrollView>
     </SafeAreaView>
   );

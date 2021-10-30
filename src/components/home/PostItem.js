@@ -8,7 +8,7 @@ import PostImage from "./PostImage";
 
 const widthScreen = Dimensions.get("window").width; //full width: ;
 
-const PostHeader = ({ displayName, avatar_url }) => {
+const PostHeader = ({ username, avatar_url }) => {
   return (
     <View style={styles.containerHeader}>
       <View
@@ -36,14 +36,14 @@ const PostHeader = ({ displayName, avatar_url }) => {
         </LinearGradient>
 
         <Text style={{ color: "white", marginLeft: 10, fontWeight: "600" }}>
-          {displayName}
+          {username}
         </Text>
       </View>
     </View>
   );
 };
 
-const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
+const PostFooter = ({ liked, description, currentId, username, uid }) => {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
   const dispatch = useDispatch();
@@ -133,7 +133,7 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
       </Text>
       <View style={{ marginHorizontal: 8, marginTop: 4 }}>
         <Text style={{ color: "white", fontWeight: "600" }} numberOfLines={2}>
-          {displayName}
+          {username}
           <Text style={{ color: "white", fontWeight: "400" }}>
             {"  "}
             {description}
@@ -148,22 +148,19 @@ const PostItem = ({
   description,
   images,
   liked,
-  displayName,
+  username,
   avatar_url,
   uid,
 }) => {
   return (
     <View style={styles.container}>
-      <PostHeader
-        displayName={displayName && displayName.replace(" ", ".").toLowerCase()}
-        avatar_url={avatar_url}
-      />
+      <PostHeader username={username} avatar_url={avatar_url} />
       <PostImage images={images} />
       <PostFooter
         currentId={currentId}
         liked={liked}
         description={description}
-        displayName={displayName && displayName.replace(" ", ".").toLowerCase()}
+        username={username}
         uid={uid}
       />
     </View>

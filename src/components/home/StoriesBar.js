@@ -14,10 +14,7 @@ const StoriesBar = ({ usersData }) => {
         data={usersData}
         keyExtractor={(item) => item.uid}
         renderItem={({ item }) => (
-          <StoryItem
-            avatar_url={item.avatar_url}
-            displayName={item.displayName}
-          />
+          <StoryItem avatar_url={item.avatar_url} username={item.username} />
         )}
       />
     </View>

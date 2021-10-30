@@ -1,7 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { StatusBar, View } from "react-native";
-import CreatePostScreen from "../../screens/main/createPost/CreatePostScreen";
 import MessageScreen from "../../screens/main/message/MessageScreen";
 import SettingProfileScreen from "../../screens/main/profile/SettingProfileScreen";
 import MainTab from "./MainTab";
@@ -9,9 +7,7 @@ import MainTab from "./MainTab";
 const Stack = createNativeStackNavigator();
 const MainStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false }}
-      >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="MainTab"
         component={MainTab}
@@ -21,11 +17,6 @@ const MainStack = () => {
         name="Message"
         component={MessageScreen}
         options={{ headerTitle: "Message" }}
-      />
-      <Stack.Screen
-        name="Post"
-        component={CreatePostScreen}
-        options={{ headerTitle: "CreatePostScreen" }}
       />
       <Stack.Screen
         name="SettingProfile"

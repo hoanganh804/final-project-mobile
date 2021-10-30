@@ -17,9 +17,10 @@ import {
   Keyboard,
 } from "react-native";
 import firebase, { db } from "../../firebase/config";
-import { addDocument } from "../../firebase/services";
+import { addDocument, setDocument } from "../../firebase/services";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
+import { removeVietnameseTones } from "../../utils/removeVietnameseTones";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -30,22 +31,20 @@ const LoginScreen = () => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        // Signed in
-        const { displayName, email, photoURL } = userCredential.user;
-        const { isNewUser } = userCredential.additionalUserInfo;
-        const dataUser = {
-          displayName: displayName,
-          avatar_url: photoURL,
-          email: email,
-          descriptionUser: "",
-        };
+        // const { displayName, email, photoURL, uid } = userCredential.user;
+        // const username = removeVietnameseTones(displayName);
+        // const newUserName = username.replace(" ", ".").toLowerCase();
+        // const dataUser = {
+        //   displayName: displayName,
+        //   avatar_url: photoURL,
+        //   email: email,
+        //   descriptionUser: "",
+        //   username: newUserName,
+        // };
         console.log("login success");
-        if (isNewUser) {
-          addDocument("users", dataUser);
-        }
+        // setDocument("users", uid, dataUser);
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         Alert.alert("Email or password wrong !");
         setEmail("");
@@ -71,18 +70,21 @@ const LoginScreen = () => {
           .signInWithCredential(credential)
           .then((user) => {
             // All the details about user are in here returned from firebase
-            const { displayName, email, photoURL } = user.user;
             const { isNewUser } = user.additionalUserInfo;
-            const dataUser = {
-              displayName: displayName,
-              avatar_url: photoURL,
-              email: email,
-              descriptionUser: "",
-              username: displayName.replace(" ", ".").toLowerCase(),
-            };
 
             if (isNewUser) {
-              addDocument("users", dataUser);
+              const { displayName, email, photoURL, uid } = user.user;
+              const username = removeVietnameseTones(displayName);
+              const newUserName = username.replace(" ", ".").toLowerCase();
+
+              const dataUser = {
+                displayName: displayName,
+                avatar_url: photoURL,
+                email: email,
+                descriptionUser: "",
+                username: newUserName,
+              };
+              setDocument("users", uid, dataUser);
             }
           })
           .catch((error) => {

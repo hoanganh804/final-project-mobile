@@ -2,7 +2,7 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 
-const HeaderHome = ({ navigation }) => {
+const HeaderHome = ({ navigation, handleModalCreatePost }) => {
   return (
     <View style={styles.container} fullWidth={true}>
       <Image
@@ -12,7 +12,7 @@ const HeaderHome = ({ navigation }) => {
       <View style={styles.iconContainer}>
         <TouchableOpacity
           style={styles.addIcon}
-          onPress={() => navigation.navigate("Post")}
+          onPress={() => handleModalCreatePost("open")}
         >
           <Image
             style={styles.iconAdd}
