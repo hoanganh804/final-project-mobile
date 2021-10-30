@@ -1,14 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import LoginScreen from "../screens/login/LoginScreen";
-import MainStack from "./main/MainStack";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import firebase, { db } from "../firebase/config";
-import { useDispatch } from "react-redux";
+import LoginScreen from "../screens/login/LoginScreen";
 import { loginAction, logoutAction } from "../slices/authSilce";
-import { loadUsers } from "../slices/userSlice";
 import { loadPosts } from "../slices/postSlice";
+import { loadUsers } from "../slices/userSlice";
+import MainStack from "./main/MainStack";
 
 const AppNavigator = () => {
   const currentId = useSelector((state) => state.auth.currentId);
@@ -19,15 +17,6 @@ const AppNavigator = () => {
       if (user) {
         const { uid } = user;
         dispatch(loginAction(uid));
-
-        // oder by key
-        // db.collection("users")
-        //   .doc(uid)
-        //   .get()
-        //   .then((docRef) => {
-        //     dispatch(loginAction(docRef.data()));
-        //   })
-        //   .catch((error) => {});
       } else {
         dispatch(logoutAction(null));
       }
@@ -40,6 +29,7 @@ const AppNavigator = () => {
       .collection("users")
       .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) => {
+        console.log("snapshot user run");
         const documents = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
@@ -63,6 +53,15 @@ const AppNavigator = () => {
       });
     return unsubscribe;
   }, []);
+
+  // oder by key
+  // db.collection("users")
+  //   .doc(uid)
+  //   .get()
+  //   .then((docRef) => {
+  //     dispatch(loginAction(docRef.data()));
+  //   })
+  //   .catch((error) => {});
 
   return (
     <NavigationContainer>
