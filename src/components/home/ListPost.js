@@ -49,7 +49,6 @@ const ListPost = ({ postsData, usersData }) => {
   //   setNewPostsDataState(postsDataState);
   // };
   // console.log(postsDataState);
-  console.log(postsDataState);
 
   return (
     <View style={styles.container}>

@@ -14,8 +14,6 @@ const MainNavigator = () => {
         headerShown: false,
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "#878787",
-        // tabBarInactiveBackgroundColor: "black",
-        // tabBarActiveBackgroundColor: "black",
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "black",

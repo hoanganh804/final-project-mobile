@@ -46,7 +46,6 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
         quality: 1,
         base64: true,
       });
-      console.log(result);
       const base64 = `data:image/png;base64,${result.base64}`;
       if (!result.cancelled) {
         const listImage = [...imageBase64];
@@ -73,7 +72,6 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
     handleModalCreatePost("close");
   };
 
-  console.log(imageBase64);
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
       <View style={styles.centeredView}>
