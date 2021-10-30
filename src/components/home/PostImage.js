@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    height: 300,
   },
   barContainer: {
     position: "absolute",
@@ -106,14 +105,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   track: {
-    backgroundColor: "#ccc",
+    backgroundColor: "#7a7a7a",
     overflow: "hidden",
     height: 6,
-    opacity: 0.5,
     borderRadius: 3,
   },
   bar: {
-    backgroundColor: "#ccc",
+    backgroundColor: "#5582ff",
     height: 6,
     position: "absolute",
     left: 0,

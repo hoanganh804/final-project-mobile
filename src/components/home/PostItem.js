@@ -73,16 +73,17 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
       <View
         style={{
           flexDirection: "row",
-          height: 44,
+          height: 38,
           width: widthScreen,
           alignItems: "center",
           justifyContent: "space-between",
+          marginTop: 4,
         }}
       >
         <View
           style={{
             flexDirection: "row",
-            height: 44,
+            height: 40,
             alignItems: "center",
           }}
         >
@@ -115,7 +116,7 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
         <View
           style={{
             flexDirection: "row",
-            height: 44,
+            height: 40,
             alignItems: "center",
           }}
         >
@@ -130,7 +131,7 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
       <Text style={{ marginLeft: 8, color: "white", fontWeight: "600" }}>
         {likes} Likes
       </Text>
-      <View style={{ marginHorizontal: 8, marginTop: 8 }}>
+      <View style={{ marginHorizontal: 8, marginTop: 4 }}>
         <Text style={{ color: "white", fontWeight: "600" }} numberOfLines={2}>
           {displayName}
           <Text style={{ color: "white", fontWeight: "400" }}>
