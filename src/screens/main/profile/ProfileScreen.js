@@ -32,7 +32,6 @@ const ProfileScreen = ({ navigation }) => {
       {
         usersData.map(item=>{
           if(item.uid==currentId){
-            console.log(item);
             return  <Infro user={item} currentId={currentId}></Infro>
           }
         })
@@ -41,17 +40,23 @@ const ProfileScreen = ({ navigation }) => {
        {
         usersData.map(item=>{
           if(item.uid==currentId){
-            console.log(item);
             return  <HeaderProfile user={item} currentId={currentId}></HeaderProfile>
           }
         })
       }
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("SettingProfile")}
-      >
-        <Text style={styles.buttonText}>Edit Profile</Text>
-      </TouchableOpacity>
+      {
+        usersData.map(item=>{
+          if(item.uid==currentId){
+            return  (<TouchableOpacity
+                      style={styles.button}
+                      onPress={() => navigation.navigate("SettingProfile",item)}
+                    >
+                      <Text style={styles.buttonText}>Edit Profile</Text>
+                    </TouchableOpacity>)
+          }
+        })
+      }
+      
       {
         usersData.map(item=>{
           if(item.uid==currentId){
