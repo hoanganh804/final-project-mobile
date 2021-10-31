@@ -44,10 +44,67 @@ const PostHeader = ({ username, avatar_url }) => {
   );
 };
 
-const PostFooter = ({ liked, description, currentId, username, id }) => {
+const PostFooter = ({
+  liked,
+  description,
+  currentId,
+  username,
+  id,
+  createdAt,
+}) => {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
+  const [timePost, setTimePost] = useState(0);
   const dispatch = useDispatch();
+
+  function timeDifference(date1, date2) {
+    var difference = date1 - date2;
+
+    var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+    difference -= daysDifference * 1000 * 60 * 60 * 24;
+
+    var hoursDifference = Math.floor(difference / 1000 / 60 / 60);
+    difference -= hoursDifference * 1000 * 60 * 60;
+
+    var minutesDifference = Math.floor(difference / 1000 / 60);
+    difference -= minutesDifference * 1000 * 60;
+
+    var secondsDifference = Math.floor(difference / 1000);
+
+    // console.log(
+    //   "difference = " +
+    //     daysDifference +
+    //     " day/s " +
+    //     hoursDifference +
+    //     " hour/s " +
+    //     minutesDifference +
+    //     " minute/s " +
+    //     secondsDifference +
+    //     " second/s "
+    // );
+    if (daysDifference === 1) {
+      return `Yesterday`;
+    }
+    if (daysDifference > 1) {
+      return `${daysDifference} days ago`;
+    }
+    if (hoursDifference > 0) {
+      return `${hoursDifference} hours ago`;
+    }
+    if (minutesDifference > 1) {
+      return `${minutesDifference} minutes ago`;
+    }
+    return "Just now";
+  }
+  useEffect(() => {
+    // const idInterval = setInterval(() => {
+    const date = Date.now();
+    const newTimePost = timeDifference(date, createdAt?.toMillis());
+    setTimePost(newTimePost);
+    // }, 180000);
+
+    // return () => clearInterval(idInterval);
+  }, []);
 
   useEffect(() => {
     liked.forEach((like) => {
@@ -148,6 +205,11 @@ const PostFooter = ({ liked, description, currentId, username, id }) => {
           </Text>
         </Text>
       </View>
+      <Text
+        style={{ marginLeft: 8, color: "#808080", fontSize: 12, marginTop: 4 }}
+      >
+        {timePost}
+      </Text>
     </View>
   );
 };
@@ -159,6 +221,7 @@ const PostItem = ({
   username,
   avatar_url,
   id,
+  createdAt,
 }) => {
   return (
     <View style={styles.container}>
@@ -170,6 +233,7 @@ const PostItem = ({
         description={description}
         username={username}
         id={id}
+        createdAt={createdAt}
       />
     </View>
   );

@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import firebase, { db } from "../firebase/config";
 import LoginScreen from "../screens/login/LoginScreen";
 import { loginAction, logoutAction } from "../slices/authSilce";
-import { loadPosts } from "../slices/postSlice";
-import { loadUsers } from "../slices/userSlice";
 import MainStack from "./main/MainStack";
 
 const AppNavigator = () => {
@@ -22,36 +20,6 @@ const AppNavigator = () => {
       }
     });
     return () => unsubscired();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = db
-      .collection("users")
-      .orderBy("createdAt", "desc")
-      .onSnapshot((snapshot) => {
-        console.log("snapshot user run");
-        const documents = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        dispatch(loadUsers(documents));
-      });
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = db
-      .collection("posts")
-      .orderBy("createdAt", "desc")
-      .onSnapshot((snapshot) => {
-        console.log("snapshot post run");
-        const documents = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        dispatch(loadPosts(documents));
-      });
-    return unsubscribe;
   }, []);
 
   // oder by key

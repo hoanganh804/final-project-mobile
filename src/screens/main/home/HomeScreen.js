@@ -46,6 +46,7 @@ const HomeScreen = ({ navigation }) => {
       <CreatePostScreen
         modalVisible={modalVisible}
         handleModalCreatePost={handleModalCreatePost}
+        usersData={usersData}
       />
     </SafeAreaView>
   );

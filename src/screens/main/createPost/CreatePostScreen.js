@@ -6,25 +6,41 @@ import {
   Button,
   Dimensions,
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
   Modal,
   Platform,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { addDocument } from "../../../firebase/services";
+import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useKeyboardHeigh } from "../../../hooks/useKeyboardHeigh";
+import { LinearGradient } from "expo-linear-gradient";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
-const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
+const CreatePostScreen = ({
+  modalVisible,
+  handleModalCreatePost,
+  usersData,
+}) => {
   const [imageBase64, setImageBase64] = useState([]);
   const [descriptionPost, setDescriptionPost] = useState("");
+  const [keyBoardHeigh, setKeyBoardHeigh] = useState(0);
+  const [currentUser, setCurrentUser] = useState({});
+
   const currentId = useSelector((state) => state.auth.currentId);
+  const newKeyboardHeigh = useKeyboardHeigh();
 
   useEffect(() => {
     (async () => {
@@ -38,6 +54,12 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
     })();
   }, []);
 
+  useEffect(() => {
+    const currentUser = usersData.filter((user) => user.id === currentId);
+    const newUser = currentUser[0];
+    setCurrentUser(newUser);
+  }, [usersData]);
+
   const pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -47,8 +69,10 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
         base64: true,
       });
       const base64 = `data:image/png;base64,${result.base64}`;
+      // console.log(base64);
       if (!result.cancelled) {
         const listImage = [...imageBase64];
+        // console.log(listImage);
         listImage.push(base64);
         setImageBase64(listImage);
       }
@@ -56,6 +80,10 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
       console.log("get base64 error", err);
     }
   };
+
+  useEffect(() => {
+    setKeyBoardHeigh(newKeyboardHeigh);
+  }, [newKeyboardHeigh]);
 
   const uploadPost = (imageBase64, descriptionPost) => {
     const data = {
@@ -67,7 +95,7 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
     };
 
     addDocument("posts", data);
-    setImageBase64(null);
+    setImageBase64([]);
     setDescriptionPost("");
     handleModalCreatePost("close");
   };
@@ -82,7 +110,7 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
               size={26}
               color="white"
               onPress={() => {
-                setImageBase64(null);
+                setImageBase64([]);
                 setDescriptionPost("");
                 handleModalCreatePost("close");
               }}
@@ -96,7 +124,9 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
                 borderRadius: 3,
                 paddingHorizontal: 14,
                 paddingVertical: 6,
-                backgroundColor: "rgba(255,255,255,0.3)",
+                backgroundColor: descriptionPost
+                  ? "#1b76f2"
+                  : "rgba(255,255,255,0.3)",
               }}
               onPress={() => {
                 if (!imageBase64 || !descriptionPost) {
@@ -108,7 +138,7 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
             >
               <Text
                 style={{
-                  color: "#808080",
+                  color: descriptionPost ? "white" : "#808080",
                   fontWeight: "600",
                   fontSize: 14,
                 }}
@@ -117,27 +147,90 @@ const CreatePostScreen = ({ modalVisible, handleModalCreatePost }) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <TextInput
-            multiline={true}
-            numberOfLines={4}
-            placeholder="Type something"
-            placeholderTextColor="grey"
-            style={{ color: "white" }}
-            onChangeText={(text) => setDescriptionPost(text)}
-            value={descriptionPost}
-          />
-          <Button title="Pick an image from camera roll" onPress={pickImage} />
-
-          {imageBase64 &&
-            imageBase64.map((image, index) => (
-              <Image
-                source={{
-                  uri: image,
+          <ScrollView style={{}} onPress={Keyboard.dismiss}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 8,
+                marginVertical: 10,
+              }}
+            >
+              <LinearGradient
+                colors={["#DE0046", "#F7A34B"]}
+                style={{
+                  height: 42,
+                  width: 42,
+                  borderRadius: 21,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-                key={index}
-                style={{ width: 200, height: 200, marginTop: 10 }}
-              />
-            ))}
+              >
+                <Image
+                  style={{ height: 40, width: 40, borderRadius: 20 }}
+                  source={{ uri: currentUser?.avatar_url }}
+                />
+              </LinearGradient>
+              <Text
+                style={{
+                  color: "white",
+                  paddingLeft: 10,
+                  fontSize: 16,
+                  fontWeight: "700",
+                }}
+              >
+                {currentUser?.username}
+              </Text>
+            </View>
+            <AutoGrowingTextInput
+              minHeight={40}
+              width={deviceWidth}
+              placeholder="What do you think ?"
+              placeholderTextColor="#ccc"
+              style={{ color: "white", padding: 8 }}
+              onChangeText={(text) => setDescriptionPost(text)}
+              value={descriptionPost}
+            />
+
+            {imageBase64 &&
+              imageBase64.map((image, index) => (
+                <Image
+                  source={{
+                    uri: image,
+                  }}
+                  key={index}
+                  fullWidth={true}
+                  resizeMode="cover"
+                  style={{
+                    height: 250,
+                    width: deviceWidth - 16,
+                    marginVertical: 16,
+                    marginHorizontal: 8,
+                    borderRadius: 3,
+                  }}
+                />
+              ))}
+          </ScrollView>
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{
+              backgroundColor: "#2d2d2d",
+              height: Platform.OS === "ios" && keyBoardHeigh === 0 ? 80 : 60,
+              width: deviceWidth,
+              alignItems: "center",
+              marginTop: 20,
+              flexDirection: "row",
+              paddingLeft: 8,
+              bottom: 20 + keyBoardHeigh,
+              paddingBottom:
+                Platform.OS === "ios" && keyBoardHeigh === 0 ? 30 : 0,
+            }}
+          >
+            <FontAwesome5 name="images" size={24} color="green" />
+            <Text style={{ color: "white", marginLeft: 10, fontWeight: "500" }}>
+              Add image
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -159,13 +252,15 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     width: deviceWidth,
     height: deviceHeight,
+    alignItems: "center",
   },
   headerContainer: {
-    height: Platform.OS === "ios" ? 60 : 46,
+    height: Platform.OS === "ios" ? 70 : 46,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
     paddingHorizontal: 16,
     paddingTop: Platform.OS === "ios" ? 30 : 0,
+    width: deviceWidth,
   },
 });

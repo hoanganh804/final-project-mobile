@@ -48,7 +48,7 @@ const ListPost = ({ postsData, usersData }) => {
   // const loadMoreData = () => {
   //   setNewPostsDataState(postsDataState);
   // };
-  // console.log(postsDataState);
+  // console.log(postsDataState[0].createdAt);
 
   return (
     <View style={styles.container}>
@@ -69,6 +69,7 @@ const ListPost = ({ postsData, usersData }) => {
             username={item.username}
             avatar_url={item.avatar_url}
             id={item.id}
+            createdAt={item.createdAt}
           />
         )}
       />
