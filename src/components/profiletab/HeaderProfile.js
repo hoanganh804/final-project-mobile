@@ -22,7 +22,7 @@ function HeaderProfile(props) {
     <>
       <View style={styles.containerbody}>
         <LinearGradient colors={["#DE0046", "#F7A34B"]} style={styles.boder}>
-          <Image style={styles.img} source={{ uri: user.avatar_url }} />
+          <Image style={styles.img} source={{ uri: user?.avatar_url }} />
         </LinearGradient>
         <View style={styles.arrowcount}>
           <Text style={styles.count}>0</Text>
@@ -38,8 +38,8 @@ function HeaderProfile(props) {
         </View>
       </View>
       <View style={styles.bodytext}>
-        <Text style={styles.bodytextTitle}>{user.displayName}</Text>
-        <Text style={styles.bodytextDetails}>{user.descriptionUser}</Text>
+        <Text style={styles.bodytextTitle}>{user?.displayName}</Text>
+        <Text style={styles.bodytextDetails}>{user?.descriptionUser}</Text>
         <TouchableOpacity>
           <Text style={styles.bodytextLink}>Link goes here</Text>
         </TouchableOpacity>

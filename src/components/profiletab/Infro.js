@@ -28,7 +28,7 @@ function Infro(props) {
   return (
     <View style={styles.containertop}>
       <TouchableOpacity style={styles.containerleft}>
-        <Text style={styles.text}>{user.username}</Text>
+        <Text style={styles.text}>{user?.username}</Text>
         <AntDesign
           style={styles.icondown}
           name="down"
