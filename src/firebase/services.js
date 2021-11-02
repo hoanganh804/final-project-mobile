@@ -3,18 +3,48 @@ import firebase, { db } from "./config";
 export const addDocument = (collection, data) => {
   const query = db.collection(collection);
 
-  query.add({
-    ...data,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  });
+  query
+    .add({
+      ...data,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
 };
+
 export const setDocument = (collection, id, data) => {
   const query = db.collection(collection);
 
-  query.doc(id).set({
-    ...data,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  });
+  query
+    .doc(id)
+    .set({
+      ...data,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+};
+
+export const deleteDocument = (collection, id) => {
+  const query = db.collection(collection);
+
+  query
+    .doc(id)
+    .delete()
+    .then(() => {
+      console.log("Document successfully deleted!");
+    })
+    .catch((error) => {
+      console.error("Error delete document: ", error);
+    });
 };
 
 // tao keywords cho displayName, su dung cho search

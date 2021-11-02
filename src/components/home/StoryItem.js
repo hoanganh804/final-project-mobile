@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   imageStory: {
     height: 60,
     width: 60,
+    borderColor: "black",
     borderRadius: 30,
     borderWidth: 2,
   },

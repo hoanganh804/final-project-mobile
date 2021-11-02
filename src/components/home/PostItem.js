@@ -1,15 +1,46 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Dimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase/config";
 import { likeAction, unLikeAction } from "../../slices/postSlice";
+import { timeDifference } from "../../utils/timeDifference";
 import PostImage from "./PostImage";
+import { Feather } from "@expo/vector-icons";
+import { deleteDocument } from "../../firebase/services";
 
 const widthScreen = Dimensions.get("window").width; //full width: ;
 
-const PostHeader = ({ username, avatar_url }) => {
+const PostHeader = ({ username, avatar_url, id }) => {
+  const showConfirmDelete = (id) => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to remove this post?",
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            deletePost(id);
+          },
+        },
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+  const deletePost = (id) => {
+    id && db.collection("posts").doc(id).update({ isDeleted: true });
+  };
+
   return (
     <View style={styles.containerHeader}>
       <View
@@ -40,6 +71,9 @@ const PostHeader = ({ username, avatar_url }) => {
           {username}
         </Text>
       </View>
+      <TouchableOpacity onPress={() => showConfirmDelete(id)}>
+        <Feather name="more-horizontal" size={24} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -55,51 +89,10 @@ const PostFooter = ({
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
   const [timePost, setTimePost] = useState(0);
-  const dispatch = useDispatch();
 
-  function timeDifference(date1, date2) {
-    var difference = date1 - date2;
-
-    var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
-    difference -= daysDifference * 1000 * 60 * 60 * 24;
-
-    var hoursDifference = Math.floor(difference / 1000 / 60 / 60);
-    difference -= hoursDifference * 1000 * 60 * 60;
-
-    var minutesDifference = Math.floor(difference / 1000 / 60);
-    difference -= minutesDifference * 1000 * 60;
-
-    var secondsDifference = Math.floor(difference / 1000);
-
-    // console.log(
-    //   "difference = " +
-    //     daysDifference +
-    //     " day/s " +
-    //     hoursDifference +
-    //     " hour/s " +
-    //     minutesDifference +
-    //     " minute/s " +
-    //     secondsDifference +
-    //     " second/s "
-    // );
-    if (daysDifference === 1) {
-      return `Yesterday`;
-    }
-    if (daysDifference > 1) {
-      return `${daysDifference} days ago`;
-    }
-    if (hoursDifference > 0) {
-      return `${hoursDifference} hours ago`;
-    }
-    if (minutesDifference > 1) {
-      return `${minutesDifference} minutes ago`;
-    }
-    return "Just now";
-  }
   useEffect(() => {
     // const idInterval = setInterval(() => {
-    const date = Date.now();
-    const newTimePost = timeDifference(date, createdAt?.toMillis());
+    const newTimePost = timeDifference(createdAt?.toMillis());
     setTimePost(newTimePost);
     // }, 180000);
 
@@ -225,7 +218,7 @@ const PostItem = ({
 }) => {
   return (
     <View style={styles.container}>
-      <PostHeader username={username} avatar_url={avatar_url} />
+      <PostHeader username={username} avatar_url={avatar_url} id={id} />
       <PostImage images={images} />
       <PostFooter
         currentId={currentId}

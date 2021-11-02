@@ -16,7 +16,7 @@ function Story(props) {
   const { post } = props;
   return (
     <View style={styles.container}>
-      <View>
+      {/* <View>
         <View style={styles.boder}>
           <Image style={styles.img} source={{ uri: post[1].images[0] }} />
         </View>
@@ -33,10 +33,15 @@ function Story(props) {
           <Image style={styles.img} source={{ uri: post[3].images[0] }} />
         </View>
         <Text style={styles.text}>Story 3</Text>
-      </View>
+      </View> */}
       <View>
         <View style={styles.boder1}>
-          <Ionicons name="add" size={44} color="white" />
+          <Ionicons
+            style={{ paddingLeft: 2 }}
+            name="add"
+            size={36}
+            color="white"
+          />
         </View>
         <Text style={styles.text}>New</Text>
       </View>
@@ -48,8 +53,9 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 15,
     marginBottom: 8,
+    marginHorizontal: 8,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
   },
   img: {
     height: 60,
@@ -77,7 +83,7 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     textAlign: "center",
-    marginTop: 2,
+    marginTop: 3,
   },
 });
 

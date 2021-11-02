@@ -65,7 +65,7 @@ const CreatePostScreen = ({
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        quality: 1,
+        quality: 0.5,
         base64: true,
       });
       const base64 = `data:image/png;base64,${result.base64}`;
@@ -86,12 +86,13 @@ const CreatePostScreen = ({
   }, [newKeyboardHeigh]);
 
   const uploadPost = (imageBase64, descriptionPost) => {
+    if (!imageBase64.length) return;
     const data = {
       ownerId: currentId,
       liked: [],
       description: descriptionPost,
       images: imageBase64,
-      isDelete: false,
+      isDeleted: false,
     };
 
     addDocument("posts", data);
@@ -124,12 +125,13 @@ const CreatePostScreen = ({
                 borderRadius: 3,
                 paddingHorizontal: 14,
                 paddingVertical: 6,
-                backgroundColor: descriptionPost
-                  ? "#1b76f2"
-                  : "rgba(255,255,255,0.3)",
+                backgroundColor:
+                  descriptionPost && imageBase64.length
+                    ? "#1b76f2"
+                    : "rgba(255,255,255,0.3)",
               }}
               onPress={() => {
-                if (!imageBase64 || !descriptionPost) {
+                if (!imageBase64.length || !descriptionPost) {
                   Alert.alert("Please choice image and fill description");
                   return;
                 }
@@ -138,7 +140,8 @@ const CreatePostScreen = ({
             >
               <Text
                 style={{
-                  color: descriptionPost ? "white" : "#808080",
+                  color:
+                    descriptionPost && imageBase64.length ? "white" : "#808080",
                   fontWeight: "600",
                   fontSize: 14,
                 }}

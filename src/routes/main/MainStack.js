@@ -31,6 +31,7 @@ const MainStack = () => {
   useEffect(() => {
     const unsubscribe = db
       .collection("posts")
+      .where("isDeleted", "==", false)
       .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) => {
         console.log("snapshot post run");
@@ -45,6 +46,7 @@ const MainStack = () => {
       });
     return unsubscribe;
   }, []);
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
