@@ -150,7 +150,7 @@ const CreatePostScreen = ({
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={{}} onPress={Keyboard.dismiss}>
+          <ScrollView>
             <View
               style={{
                 flexDirection: "row",

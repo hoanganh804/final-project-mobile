@@ -5,7 +5,7 @@ import HeaderHome from "./HeaderHome";
 import PostItem from "./PostItem";
 import StoriesBar from "./StoriesBar";
 
-const ListPost = ({ postsData, usersData }) => {
+const ListPost = ({ postsData, usersData, navigation }) => {
   const currentId = useSelector((state) => state.auth.currentId);
 
   const [postsDataState, setPostsDataState] = useState(postsData);
@@ -70,6 +70,7 @@ const ListPost = ({ postsData, usersData }) => {
             avatar_url={item.avatar_url}
             id={item.id}
             createdAt={item.createdAt}
+            navigation={navigation}
           />
         )}
       />

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { db } from "../../firebase/config";
 import { schedulePushNotification } from "../../notifications/TestNoti";
+import CommentScreen from "../../screens/main/comment/CommentScreen";
 import MessageScreen from "../../screens/main/message/MessageScreen";
 import SettingProfileScreen from "../../screens/main/profile/SettingProfileScreen";
 import { loadPosts } from "../../slices/postSlice";
@@ -63,6 +64,19 @@ const MainStack = () => {
         name="SettingProfile"
         component={SettingProfileScreen}
         options={{ headerTitle: "SettingProfile" }}
+      />
+      <Stack.Screen
+        name="Comment"
+        component={CommentScreen}
+        options={{
+          headerShown: true,
+          headerTitle: "Comments",
+          headerStyle: {
+            backgroundColor: "black",
+          },
+          headerTintColor: "#fff",
+          headerBackTitle: "",
+        }}
       />
     </Stack.Navigator>
   );

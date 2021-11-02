@@ -85,6 +85,8 @@ const PostFooter = ({
   username,
   id,
   createdAt,
+  navigation,
+  avatar_url,
 }) => {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
@@ -158,7 +160,18 @@ const PostFooter = ({
               />
             )}
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Comment", {
+                postId: id,
+                currentId: currentId,
+                avatar_url: avatar_url,
+                username: username,
+                description: description,
+                timePost: timePost,
+              })
+            }
+          >
             <Image
               style={styles.icon}
               source={require("../../res/images/comment.png")}
@@ -198,6 +211,29 @@ const PostFooter = ({
           </Text>
         </Text>
       </View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Comment", {
+            postId: id,
+            currentId: currentId,
+            avatar_url: avatar_url,
+            username: username,
+            description: description,
+            timePost: timePost,
+          })
+        }
+      >
+        <Text
+          style={{
+            marginLeft: 8,
+            color: "#808080",
+            fontSize: 12,
+            marginTop: 4,
+          }}
+        >
+          See all comments...
+        </Text>
+      </TouchableOpacity>
       <Text
         style={{ marginLeft: 8, color: "#808080", fontSize: 12, marginTop: 4 }}
       >
@@ -215,6 +251,7 @@ const PostItem = ({
   avatar_url,
   id,
   createdAt,
+  navigation,
 }) => {
   return (
     <View style={styles.container}>
@@ -227,6 +264,8 @@ const PostItem = ({
         username={username}
         id={id}
         createdAt={createdAt}
+        navigation={navigation}
+        avatar_url={avatar_url}
       />
     </View>
   );
