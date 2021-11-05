@@ -1,12 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import LoginScreen from "../screens/login/LoginScreen";
-import MainStack from "./main/MainStack";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import firebase, { db } from "../firebase/config";
-import { useDispatch } from "react-redux";
+import LoginScreen from "../screens/login/LoginScreen";
 import { loginAction, logoutAction } from "../slices/authSilce";
+import MainStack from "./main/MainStack";
 
 const AppNavigator = () => {
   const currentId = useSelector((state) => state.auth.currentId);
@@ -24,16 +22,14 @@ const AppNavigator = () => {
     return () => unsubscired();
   }, []);
 
-  // useEffect(() => {
-  //   const unsubscribe = db.collection("users").onSnapshot((snapshot) => {
-  //     const documents = snapshot.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     console.log(documents);
-  //   });
-  //   return unsubscribe;
-  // }, []);
+  // oder by key
+  // db.collection("users")
+  //   .doc(uid)
+  //   .get()
+  //   .then((docRef) => {
+  //     dispatch(loginAction(docRef.data()));
+  //   })
+  //   .catch((error) => {});
 
   return (
     <NavigationContainer>

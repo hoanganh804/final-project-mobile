@@ -12,8 +12,7 @@ import {
 } from "react-native";
 
 function RenderImg(props) {
-  const { post,currentId } = props;
-  const { arr, setArr } = useState("");
+  const { post, currentId } = props;
 
   return (
     <View style={styles.container}>
@@ -33,11 +32,13 @@ function RenderImg(props) {
       </View>
 
       <View style={styles.listview}>
-        {post.map(item=>{
-          if(item.ownerId==currentId){
-            return(<TouchableOpacity style={styles.wrapimg}>
-              <Image style={styles.img} source={{ uri: item.images[0]}} />
-            </TouchableOpacity>)
+        {post.map((item) => {
+          if (item.ownerId == currentId) {
+            return (
+              <TouchableOpacity key={item.id} style={styles.wrapimg}>
+                <Image style={styles.img} source={{ uri: item.images[0] }} />
+              </TouchableOpacity>
+            );
           }
         })}
       </View>
@@ -45,20 +46,20 @@ function RenderImg(props) {
   );
 }
 const styles = StyleSheet.create({
-  wrapimg:{
-    width:'33.33%',
-    padding:1,
+  wrapimg: {
+    width: "33.33%",
+    padding: 1,
   },
   img: {
-    width:'100%',
-    padding:'50%',
+    width: "100%",
+    padding: "50%",
   },
   container: {
     flex: 1,
   },
   listview: {
-    flexDirection:'row',
-    flexWrap:'wrap'
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   gridView: {
     backgroundColor: "red",

@@ -1,14 +1,46 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Dimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { db } from "../../firebase/config";
 import { likeAction, unLikeAction } from "../../slices/postSlice";
+import { timeDifference } from "../../utils/timeDifference";
 import PostImage from "./PostImage";
+import { Feather } from "@expo/vector-icons";
+import { deleteDocument } from "../../firebase/services";
 
 const widthScreen = Dimensions.get("window").width; //full width: ;
 
-const PostHeader = ({ displayName, avatar_url }) => {
+const PostHeader = ({ username, avatar_url, id }) => {
+  const showConfirmDelete = (id) => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to remove this post?",
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            deletePost(id);
+          },
+        },
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+  const deletePost = (id) => {
+    id && db.collection("posts").doc(id).update({ isDeleted: true });
+  };
+
   return (
     <View style={styles.containerHeader}>
       <View
@@ -36,17 +68,38 @@ const PostHeader = ({ displayName, avatar_url }) => {
         </LinearGradient>
 
         <Text style={{ color: "white", marginLeft: 10, fontWeight: "600" }}>
-          {displayName}
+          {username}
         </Text>
       </View>
+      <TouchableOpacity onPress={() => showConfirmDelete(id)}>
+        <Feather name="more-horizontal" size={24} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
 
-const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
+const PostFooter = ({
+  liked,
+  description,
+  currentId,
+  username,
+  id,
+  createdAt,
+  navigation,
+  avatar_url,
+}) => {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(liked.length);
-  const dispatch = useDispatch();
+  const [timePost, setTimePost] = useState(0);
+
+  useEffect(() => {
+    // const idInterval = setInterval(() => {
+    const newTimePost = timeDifference(createdAt?.toMillis());
+    setTimePost(newTimePost);
+    // }, 180000);
+
+    // return () => clearInterval(idInterval);
+  }, []);
 
   useEffect(() => {
     liked.forEach((like) => {
@@ -54,17 +107,24 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
         setIsLike(true);
       }
     });
-  }, []);
+  }, [liked]);
 
-  const handleLike = (uid, currentId) => {
+  useEffect(() => {
+    const likeNumber = liked.length;
+    setLikes(likeNumber);
+  }, [liked]);
+
+  const handleLike = (id, currentId) => {
     if (isLike) {
-      dispatch(unLikeAction({ uid: uid, currentId: currentId }));
+      const newLiked = [...liked];
+      const newRemoveLike = newLiked.filter((like) => like !== currentId);
+      db.collection("posts").doc(id).update({ liked: newRemoveLike });
       setIsLike(false);
-      setLikes(likes - 1);
     } else {
-      dispatch(likeAction({ uid: uid, currentId: currentId }));
+      const newAddLike = [...liked];
+      newAddLike.push(currentId);
+      db.collection("posts").doc(id).update({ liked: newAddLike });
       setIsLike(true);
-      setLikes(likes + 1);
     }
   };
 
@@ -73,20 +133,21 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
       <View
         style={{
           flexDirection: "row",
-          height: 44,
+          height: 38,
           width: widthScreen,
           alignItems: "center",
           justifyContent: "space-between",
+          marginTop: 4,
         }}
       >
         <View
           style={{
             flexDirection: "row",
-            height: 44,
+            height: 40,
             alignItems: "center",
           }}
         >
-          <TouchableOpacity onPress={() => handleLike(uid, currentId)}>
+          <TouchableOpacity onPress={() => handleLike(id, currentId)}>
             {isLike ? (
               <Image
                 style={styles.icon}
@@ -99,7 +160,18 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
               />
             )}
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Comment", {
+                postId: id,
+                currentId: currentId,
+                avatar_url: avatar_url,
+                username: username,
+                description: description,
+                timePost: timePost,
+              })
+            }
+          >
             <Image
               style={styles.icon}
               source={require("../../res/images/comment.png")}
@@ -115,7 +187,7 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
         <View
           style={{
             flexDirection: "row",
-            height: 44,
+            height: 40,
             alignItems: "center",
           }}
         >
@@ -130,15 +202,43 @@ const PostFooter = ({ liked, description, currentId, displayName, uid }) => {
       <Text style={{ marginLeft: 8, color: "white", fontWeight: "600" }}>
         {likes} Likes
       </Text>
-      <View style={{ marginHorizontal: 8, marginTop: 8 }}>
+      <View style={{ marginHorizontal: 8, marginTop: 4 }}>
         <Text style={{ color: "white", fontWeight: "600" }} numberOfLines={2}>
-          {displayName}
+          {username}
           <Text style={{ color: "white", fontWeight: "400" }}>
             {"  "}
             {description}
           </Text>
         </Text>
       </View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Comment", {
+            postId: id,
+            currentId: currentId,
+            avatar_url: avatar_url,
+            username: username,
+            description: description,
+            timePost: timePost,
+          })
+        }
+      >
+        <Text
+          style={{
+            marginLeft: 8,
+            color: "#808080",
+            fontSize: 12,
+            marginTop: 4,
+          }}
+        >
+          See all comments...
+        </Text>
+      </TouchableOpacity>
+      <Text
+        style={{ marginLeft: 8, color: "#808080", fontSize: 12, marginTop: 4 }}
+      >
+        {timePost}
+      </Text>
     </View>
   );
 };
@@ -147,23 +247,25 @@ const PostItem = ({
   description,
   images,
   liked,
-  displayName,
+  username,
   avatar_url,
-  uid,
+  id,
+  createdAt,
+  navigation,
 }) => {
   return (
     <View style={styles.container}>
-      <PostHeader
-        displayName={displayName && displayName.replace(" ", ".").toLowerCase()}
-        avatar_url={avatar_url}
-      />
+      <PostHeader username={username} avatar_url={avatar_url} id={id} />
       <PostImage images={images} />
       <PostFooter
         currentId={currentId}
         liked={liked}
         description={description}
-        displayName={displayName && displayName.replace(" ", ".").toLowerCase()}
-        uid={uid}
+        username={username}
+        id={id}
+        createdAt={createdAt}
+        navigation={navigation}
+        avatar_url={avatar_url}
       />
     </View>
   );

@@ -73,19 +73,30 @@ const PostImage = ({ images }) => {
 
   return (
     <View style={styles.container} flex={1}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={10}
-        pagingEnabled
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: animVal } } }],
-          { useNativeDriver: false }
-        )}
-      >
-        {imageArray}
-      </ScrollView>
-      <View style={styles.barContainer}>{barArray}</View>
+      {images[1] ? (
+        <View style={styles.container} flex={1}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={10}
+            pagingEnabled
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: animVal } } }],
+              { useNativeDriver: false }
+            )}
+          >
+            {imageArray}
+          </ScrollView>
+          <View style={styles.barContainer}>{barArray}</View>
+        </View>
+      ) : (
+        <View>
+          <Image
+            source={{ uri: images[0] }}
+            style={{ width: deviceWidth, height: heighImage }}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -97,7 +108,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    height: 300,
   },
   barContainer: {
     position: "absolute",
@@ -106,14 +116,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   track: {
-    backgroundColor: "#ccc",
+    backgroundColor: "#7a7a7a",
     overflow: "hidden",
     height: 6,
-    opacity: 0.5,
     borderRadius: 3,
   },
   bar: {
-    backgroundColor: "#ccc",
+    backgroundColor: "#5582ff",
     height: 6,
     position: "absolute",
     left: 0,

@@ -6,16 +6,17 @@ import PostItem from "./PostItem";
 import StoriesBar from "./StoriesBar";
 
 const ListPost = ({ postsData, usersData, navigation }) => {
-  const currentId = "1";
+  const currentId = useSelector((state) => state.auth.currentId);
+
   const [postsDataState, setPostsDataState] = useState(postsData);
 
   const getUser = (ownerId) => {
     const dataUsers = usersData.filter((user) => {
-      return user.uid === ownerId && user;
+      return user.id === ownerId && user;
     });
     const newDataUser = {
-      displayName: dataUsers[0].displayName,
-      avatar_url: dataUsers[0].avatar_url,
+      username: dataUsers[0]?.username,
+      avatar_url: dataUsers[0]?.avatar_url,
     };
     return newDataUser;
   };
@@ -25,13 +26,14 @@ const ListPost = ({ postsData, usersData, navigation }) => {
       const dataUser = getUser(post.ownerId);
       const newPost = {
         ...post,
-        displayName: dataUser.displayName,
+        username: dataUser.username,
         avatar_url: dataUser.avatar_url,
       };
       return newPost;
     });
     setPostsDataState(newPostsData);
-  }, []);
+  }, [postsData]);
+
   // const [isFetching, setIsFetching] = useState(false);
   // const hello = () => {
   //   console.log("hello");
@@ -46,28 +48,29 @@ const ListPost = ({ postsData, usersData, navigation }) => {
   // const loadMoreData = () => {
   //   setNewPostsDataState(postsDataState);
   // };
-  // console.log(postsDataState);
+  // console.log(postsDataState[0].createdAt);
 
   return (
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={<StoriesBar usersData={usersData} />}
         data={postsDataState}
-        keyExtractor={(item) => item.uid}
+        keyExtractor={(item) => item.id}
         // onRefresh={hello}
         // refreshing={isFetching}
         // onEndReached={loadMoreData}
         // onEndReachedThreshold={0}
         renderItem={({ item }) => (
           <PostItem
-            key={item.uid}
             currentId={currentId}
             description={item.description}
             images={item.images}
             liked={item.liked}
-            displayName={item.displayName}
+            username={item.username}
             avatar_url={item.avatar_url}
-            uid={item.uid}
+            id={item.id}
+            createdAt={item.createdAt}
+            navigation={navigation}
           />
         )}
       />

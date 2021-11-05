@@ -28,7 +28,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+    "facebookScheme": "fb171413448445007",
+    "facebookAppId": "171413448445007",
+    "facebookDisplayName": "final-project-mobile"
   }
-    
+  
 }

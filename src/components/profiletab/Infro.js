@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -25,12 +26,24 @@ function Infro(props) {
       .catch((err) => console.log(err));
   };
 
+  const showConfirmLogout = (id) => {
+    return Alert.alert("Are your sure?", "Are you sure you want logout?", [
+      {
+        text: "Yes",
+        onPress: () => {
+          logout();
+        },
+      },
+      {
+        text: "No",
+      },
+    ]);
+  };
+
   return (
     <View style={styles.containertop}>
       <TouchableOpacity style={styles.containerleft}>
-        <Text style={styles.text}>
-          {user.displayName.replace(" ", ".").toLowerCase()}
-        </Text>
+        <Text style={styles.text}>{user?.username}</Text>
         <AntDesign
           style={styles.icondown}
           name="down"
@@ -45,7 +58,7 @@ function Infro(props) {
             source={require("../../res/images/addIcon.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={logout}>
+        <TouchableOpacity onPress={showConfirmLogout}>
           <Image
             style={styles.icon}
             source={require("../../res/images/list3.png")}

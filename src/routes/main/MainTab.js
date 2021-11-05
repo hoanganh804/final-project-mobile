@@ -6,6 +6,8 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { StatusBar, View } from "react-native";
 
+import TestNoti from "../../notifications/TestNoti";
+
 const Tab = createBottomTabNavigator();
 const MainNavigator = () => {
   return (
@@ -14,8 +16,6 @@ const MainNavigator = () => {
         headerShown: false,
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "#878787",
-        // tabBarInactiveBackgroundColor: "black",
-        // tabBarActiveBackgroundColor: "black",
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "black",
@@ -41,6 +41,15 @@ const MainNavigator = () => {
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="Noti"
+        component={TestNoti}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="user-circle" size={size} color={color} />
+          ),
+        }}
+      /> */}
     </Tab.Navigator>
   );
 };

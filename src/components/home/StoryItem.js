@@ -2,8 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-const StoryItem = ({ displayName, avatar_url }) => {
-  const newName = displayName.replace(" ", ".").toLowerCase();
+const StoryItem = ({ username, avatar_url }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -19,7 +18,7 @@ const StoryItem = ({ displayName, avatar_url }) => {
         <Image style={styles.imageStory} source={{ uri: avatar_url }} />
       </LinearGradient>
       <Text numberOfLines={1} style={{ marginTop: 3, color: "white" }}>
-        {newName}
+        {username}
       </Text>
     </View>
   );
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
   imageStory: {
     height: 60,
     width: 60,
+    borderColor: "black",
     borderRadius: 30,
     borderWidth: 2,
   },

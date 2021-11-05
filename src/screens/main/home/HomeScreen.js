@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Text,
@@ -10,22 +10,43 @@ import {
   StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HeaderHome from "../../../components/home/HeaderHome";
 import ListPost from "../../../components/home/ListPost";
-import StoriesBar from "../../../components/home/StoriesBar";
+import { db } from "../../../firebase/config";
+import { loadPosts } from "../../../slices/postSlice";
+import { loadUsers } from "../../../slices/userSlice";
+import CreatePostScreen from "../createPost/CreatePostScreen";
 
 const HomeScreen = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const usersData = useSelector((state) => state.users);
   const postsData = useSelector((state) => state.posts);
 
+  const handleModalCreatePost = (action) => {
+    if (action === "open") {
+      setModalVisible(true);
+    }
+    if (action === "close") {
+      setModalVisible(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderHome navigation={navigation} />
+      <HeaderHome
+        navigation={navigation}
+        handleModalCreatePost={handleModalCreatePost}
+      />
       <ListPost
         postsData={postsData}
         usersData={usersData}
         navigation={navigation}
+      />
+      <CreatePostScreen
+        modalVisible={modalVisible}
+        handleModalCreatePost={handleModalCreatePost}
+        usersData={usersData}
       />
     </SafeAreaView>
   );
