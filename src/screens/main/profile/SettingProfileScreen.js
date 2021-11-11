@@ -14,15 +14,28 @@ import {
 } from "react-native";
 import Line from "../../../components/profiletab/Line";
 import * as ImagePicker from "expo-image-picker";
+import { db } from "../../../firebase/config";
 
 const SettingProfileScreen = (props) => {
-  const {handleCloseModal,user} = props;
-  const {avatar_url,descriptionUser,displayName,email,username}= user;
+  const { handleCloseModal, user } = props;
+  const { avatar_url, descriptionUser, displayName, email, username, id } =
+    user;
   const [imageBase64, setImageBase64] = useState(avatar_url);
   const [name, setName] = useState(displayName);
   const [emaill, setEmail] = useState(email);
   const [nameuser, setNameuser] = useState(username);
   const [descrip, setDescrip] = useState(descriptionUser);
+
+  const editUser = (id) => {
+    id &&
+      db.collection("users").doc(id).update({
+        username: nameuser,
+        displayName: name,
+        email: emaill,
+        descriptionUser: descrip,
+        avatar_url: imageBase64,
+      });
+  };
 
   function handleChange(e) {
     setName(e);
@@ -36,7 +49,7 @@ const SettingProfileScreen = (props) => {
   function handleChangedescrip(e) {
     setDescrip(e);
   }
-  function handleClose(){
+  function handleClose() {
     handleCloseModal();
   }
   const pickImage = async () => {
@@ -57,23 +70,28 @@ const SettingProfileScreen = (props) => {
       console.log("get base64 error", err);
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.container1}>
-        <Text
-          style={styles.text}
-          onPress={()=>handleClose()}
-        >
+        <Text style={styles.text} onPress={() => handleClose()}>
           Close
         </Text>
         <Text style={styles.title}>Edit Profile</Text>
-        <Text style={styles.text}>Save</Text>
+        <TouchableOpacity
+          onPress={() => {
+            editUser(id);
+            handleClose();
+          }}
+        >
+          <Text style={styles.text}>Save</Text>
+        </TouchableOpacity>
       </View>
       <Line />
       <View style={styles.infor}>
         <View style={styles.wrapAvt}>
           <TouchableOpacity style={styles.avt} onPress={pickImage}>
-            <Image style={styles.img} source={{ uri: imageBase64}} />
+            <Image style={styles.img} source={{ uri: imageBase64 }} />
             <Text style={styles.textimg}>Change avatar</Text>
           </TouchableOpacity>
         </View>
@@ -115,10 +133,10 @@ const SettingProfileScreen = (props) => {
           <View style={styles.col}>
             <Text style={styles.label}>Description:</Text>
             <View style={styles.wrapinput}>
-              <TextInput 
-              style={styles.input}
-              value={descrip}
-              onChangeText={(e) => handleChangedescrip(e)} 
+              <TextInput
+                style={styles.input}
+                value={descrip}
+                onChangeText={(e) => handleChangedescrip(e)}
               />
               <Line></Line>
             </View>
@@ -158,41 +176,46 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   wrapAvt: {
-   
     flexDirection: "row",
     justifyContent: "center",
     margin: 10,
-    marginBottom:30,
+    marginBottom: 30,
   },
   img: {
     height: 80,
     width: 80,
     borderRadius: 40,
   },
-  textimg:{
+  textimg: {
     color: "white",
     position: "absolute",
     width: 120,
     top: 85,
-    left: -6,
-  },  
+    left: -10,
+    fontWeight: "600",
+    color: "#1b76f2",
+  },
   text: {
-    
     color: "white",
+    paddingHorizontal: 8,
+    fontWeight: "500",
+    marginTop: 12,
   },
   title: {
-    fontWeight: "bold",
     color: "white",
-    fontSize: 14,
+    fontWeight: "700",
+    fontSize: 16,
+    marginTop: 12,
   },
   container1: {
- 
     marginLeft: 8,
     marginRight: 8,
     marginTop: 40,
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomWidth: 1,
+    height: 40,
+    alignItems: "center",
   },
   boderbottom: {
     borderTopWidth: 1,
@@ -204,6 +227,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "black",
   },
-  infor: {},
 });
 export default SettingProfileScreen;

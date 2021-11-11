@@ -65,7 +65,7 @@ const CreatePostScreen = ({
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        quality: 0.5,
+        quality: 0.8,
         base64: true,
       });
       const base64 = `data:image/png;base64,${result.base64}`;

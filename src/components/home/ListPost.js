@@ -70,6 +70,7 @@ const ListPost = ({ postsData, usersData, navigation }) => {
             avatar_url={item.avatar_url}
             id={item.id}
             createdAt={item.createdAt}
+            ownerId={item.ownerId}
             navigation={navigation}
           />
         )}

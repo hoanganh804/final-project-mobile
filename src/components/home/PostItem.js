@@ -19,8 +19,8 @@ import { deleteDocument } from "../../firebase/services";
 
 const widthScreen = Dimensions.get("window").width; //full width: ;
 
-const PostHeader = ({ username, avatar_url, id }) => {
-  const showConfirmDelete = (id) => {
+const PostHeader = ({ username, avatar_url, id, currentId, ownerId }) => {
+  const showConfirmDelete = (id, ownerId, currentId) => {
     return Alert.alert(
       "Are your sure?",
       "Are you sure you want to remove this post?",
@@ -28,7 +28,7 @@ const PostHeader = ({ username, avatar_url, id }) => {
         {
           text: "Yes",
           onPress: () => {
-            deletePost(id);
+            deletePost(id, ownerId, currentId);
           },
         },
         {
@@ -37,8 +37,12 @@ const PostHeader = ({ username, avatar_url, id }) => {
       ]
     );
   };
-  const deletePost = (id) => {
-    id && db.collection("posts").doc(id).update({ isDeleted: true });
+  const deletePost = (id, ownerId, currentId) => {
+    if (ownerId === currentId) {
+      id && db.collection("posts").doc(id).update({ isDeleted: true });
+    } else {
+      Alert.alert("You do not have permission to remove post!");
+    }
   };
 
   return (
@@ -71,7 +75,9 @@ const PostHeader = ({ username, avatar_url, id }) => {
           {username}
         </Text>
       </View>
-      <TouchableOpacity onPress={() => showConfirmDelete(id)}>
+      <TouchableOpacity
+        onPress={() => showConfirmDelete(id, ownerId, currentId)}
+      >
         <Feather name="more-horizontal" size={24} color="white" />
       </TouchableOpacity>
     </View>
@@ -252,10 +258,17 @@ const PostItem = ({
   id,
   createdAt,
   navigation,
+  ownerId,
 }) => {
   return (
     <View style={styles.container}>
-      <PostHeader username={username} avatar_url={avatar_url} id={id} />
+      <PostHeader
+        username={username}
+        avatar_url={avatar_url}
+        id={id}
+        currentId={currentId}
+        ownerId={ownerId}
+      />
       <PostImage images={images} />
       <PostFooter
         currentId={currentId}
