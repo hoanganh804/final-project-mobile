@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   container1: {
     marginLeft: 8,
     marginRight: 8,
-    marginTop: 40,
+    marginTop: Platform.OS === "ios" ? 40 : 0,
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomWidth: 1,
