@@ -13,12 +13,14 @@ import {
   TextInput,
 } from "react-native";
 import Line from "../../../components/profiletab/Line";
-import ImagePicker from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker";
 
-const SettingProfileScreen = ({ props, navigation, route }) => {
-  const { email, displayName, avatar_url } = route.params;
-  const [name, setName] = useState(displayName);
-  const [emaill, setEmail] = useState(email);
+const SettingProfileScreen = (props) => {
+  const {handleCloseModal} = props;
+  const [imageBase64, setImageBase64] = useState([]);
+  const [name, setName] = useState();
+  const [emaill, setEmail] = useState();
+  console.log(handleCloseModal)
   function handleChange(e) {
     setName(e.target.value);
   }
@@ -30,12 +32,35 @@ const SettingProfileScreen = ({ props, navigation, route }) => {
       console.log("response", response);
     });
   }
+  function handleClose(){
+    handleCloseModal();
+  }
+  const pickImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        quality: 0.5,
+        base64: true,
+      });
+      const base64 = `data:image/png;base64,${result.base64}`;
+      // console.log(base64);
+      if (!result.cancelled) {
+        const listImage = [...imageBase64];
+        // console.log(listImage);
+        listImage.push(base64);
+        setImageBase64(listImage);
+      }
+    } catch (err) {
+      console.log("get base64 error", err);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.container1}>
         <Text
           style={styles.text}
-          onPress={() => navigation.navigate("ProfileTab")}
+          onPress={()=>handleClose()}
         >
           Close
         </Text>
@@ -45,9 +70,9 @@ const SettingProfileScreen = ({ props, navigation, route }) => {
       <Line />
       <View style={styles.infor}>
         <View style={styles.wrapAvt}>
-          <TouchableOpacity style={styles.avt} onPress={() => handleChooseimg}>
-            <Image style={styles.img} source={{ uri: avatar_url }} />
-            <Text style={styles.text}>Change avatar</Text>
+          <TouchableOpacity style={styles.avt} onPress={pickImage}>
+            <Image style={styles.img} source={{ uri: imageBase64[0] }} />
+            <Text style={styles.textimg}>Change avatar</Text>
           </TouchableOpacity>
         </View>
         <Line></Line>
@@ -83,9 +108,6 @@ const SettingProfileScreen = ({ props, navigation, route }) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity onPress={() => handleChooseimg}>
-        <Text style={{ color: "white" }}>aaaaaaaaa</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -119,6 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   wrapAvt: {
+   
     flexDirection: "row",
     justifyContent: "center",
     margin: 10,
@@ -128,7 +151,15 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 40,
   },
+  textimg:{
+    color: "white",
+    position: "absolute",
+    width: 120,
+    top: 80,
+    left: -6,
+  },  
   text: {
+    
     color: "white",
   },
   title: {
@@ -137,8 +168,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   container1: {
+ 
     marginLeft: 8,
-    marginTop: 20,
+    marginRight: 8,
+    marginTop: 25,
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomWidth: 1,
