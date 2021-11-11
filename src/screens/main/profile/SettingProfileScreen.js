@@ -16,16 +16,26 @@ import Line from "../../../components/profiletab/Line";
 import * as ImagePicker from "expo-image-picker";
 
 const SettingProfileScreen = (props) => {
-  const {handleCloseModal} = props;
-  const [imageBase64, setImageBase64] = useState([]);
-  const [name, setName] = useState();
-  const [emaill, setEmail] = useState();
-  console.log(handleCloseModal)
+  const {handleCloseModal,user} = props;
+  const {avatar_url,descriptionUser,displayName,email,username}= user;
+  const [imageBase64, setImageBase64] = useState([avatar_url]);
+  const [name, setName] = useState(displayName);
+  const [emaill, setEmail] = useState(email);
+  const [nameuser, setNameuser] = useState(username);
+  const [descrip, setDescrip] = useState(descriptionUser);
+
+  console.log(user);
   function handleChange(e) {
     setName(e.target.value);
   }
   function handleChangeemail(e) {
+    setNameuser(e.target.value);
+  }
+  function handleChangeusername(e) {
     setEmail(e.target.value);
+  }
+  function handleChangedescrip(e) {
+    setDescrip(e.target.value);
   }
   function handleChooseimg() {
     ImagePicker.launchImageLibrary(options, (response) => {
@@ -89,6 +99,17 @@ const SettingProfileScreen = (props) => {
             </View>
           </View>
           <View style={styles.col}>
+            <Text style={styles.label}>UerName:</Text>
+            <View style={styles.wrapinput}>
+              <TextInput
+                style={styles.input}
+                value={nameuser}
+                onChange={(e) => handleChangeusername(e)}
+              />
+              <Line></Line>
+            </View>
+          </View>
+          <View style={styles.col}>
             <Text style={styles.label}>Email:</Text>
             <View style={styles.wrapinput}>
               <TextInput
@@ -102,7 +123,11 @@ const SettingProfileScreen = (props) => {
           <View style={styles.col}>
             <Text style={styles.label}>Description:</Text>
             <View style={styles.wrapinput}>
-              <TextInput style={styles.input} />
+              <TextInput 
+              style={styles.input}
+              value={descrip}
+              onChange={(e) => handleChangedescrip(e)} 
+              />
               <Line></Line>
             </View>
           </View>
@@ -145,6 +170,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     margin: 10,
+    marginBottom:30,
   },
   img: {
     height: 80,

@@ -37,6 +37,7 @@ const ProfileScreen = ({ navigation }) => {
     setModalVisible(!modalVisible);
   }
 
+
   return (
     <SafeAreaView style={styles.container}>
       <Modal
@@ -50,7 +51,9 @@ const ProfileScreen = ({ navigation }) => {
       >
         <SettingProfileScreen
           handleCloseModal={handleCloseModal}
-        ></SettingProfileScreen>
+          user={currentUser}
+        >
+        </SettingProfileScreen>
       </Modal>
       <Infro user={currentUser} currentId={currentId}></Infro>
       <ScrollView>
