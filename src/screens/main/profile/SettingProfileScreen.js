@@ -18,29 +18,23 @@ import * as ImagePicker from "expo-image-picker";
 const SettingProfileScreen = (props) => {
   const {handleCloseModal,user} = props;
   const {avatar_url,descriptionUser,displayName,email,username}= user;
-  const [imageBase64, setImageBase64] = useState([avatar_url]);
+  const [imageBase64, setImageBase64] = useState(avatar_url);
   const [name, setName] = useState(displayName);
   const [emaill, setEmail] = useState(email);
   const [nameuser, setNameuser] = useState(username);
   const [descrip, setDescrip] = useState(descriptionUser);
 
-  console.log(user);
   function handleChange(e) {
-    setName(e.target.value);
+    setName(e);
   }
   function handleChangeemail(e) {
-    setNameuser(e.target.value);
+    setEmail(e);
   }
   function handleChangeusername(e) {
-    setEmail(e.target.value);
+    setNameuser(e);
   }
   function handleChangedescrip(e) {
-    setDescrip(e.target.value);
-  }
-  function handleChooseimg() {
-    ImagePicker.launchImageLibrary(options, (response) => {
-      console.log("response", response);
-    });
+    setDescrip(e);
   }
   function handleClose(){
     handleCloseModal();
@@ -53,13 +47,11 @@ const SettingProfileScreen = (props) => {
         quality: 0.5,
         base64: true,
       });
-      const base64 = `data:image/png;base64,${result.base64}`;
+
       // console.log(base64);
       if (!result.cancelled) {
-        const listImage = [...imageBase64];
-        // console.log(listImage);
-        listImage.push(base64);
-        setImageBase64(listImage);
+        const base64 = `data:image/png;base64,${result.base64}`;
+        setImageBase64(base64);
       }
     } catch (err) {
       console.log("get base64 error", err);
@@ -81,7 +73,7 @@ const SettingProfileScreen = (props) => {
       <View style={styles.infor}>
         <View style={styles.wrapAvt}>
           <TouchableOpacity style={styles.avt} onPress={pickImage}>
-            <Image style={styles.img} source={{ uri: imageBase64[0] }} />
+            <Image style={styles.img} source={{ uri: imageBase64}} />
             <Text style={styles.textimg}>Change avatar</Text>
           </TouchableOpacity>
         </View>
@@ -93,7 +85,7 @@ const SettingProfileScreen = (props) => {
               <TextInput
                 style={styles.input}
                 value={name}
-                onChange={(e) => handleChange(e)}
+                onChangeText={(e) => handleChange(e)}
               />
               <Line></Line>
             </View>
@@ -104,7 +96,7 @@ const SettingProfileScreen = (props) => {
               <TextInput
                 style={styles.input}
                 value={nameuser}
-                onChange={(e) => handleChangeusername(e)}
+                onChangeText={(e) => handleChangeusername(e)}
               />
               <Line></Line>
             </View>
@@ -115,7 +107,7 @@ const SettingProfileScreen = (props) => {
               <TextInput
                 style={styles.input}
                 value={emaill}
-                onChange={(e) => handleChangeemail(e)}
+                onChangeText={(e) => handleChangeemail(e)}
               />
               <Line></Line>
             </View>
@@ -126,7 +118,7 @@ const SettingProfileScreen = (props) => {
               <TextInput 
               style={styles.input}
               value={descrip}
-              onChange={(e) => handleChangedescrip(e)} 
+              onChangeText={(e) => handleChangedescrip(e)} 
               />
               <Line></Line>
             </View>
@@ -181,7 +173,7 @@ const styles = StyleSheet.create({
     color: "white",
     position: "absolute",
     width: 120,
-    top: 80,
+    top: 85,
     left: -6,
   },  
   text: {
@@ -197,7 +189,7 @@ const styles = StyleSheet.create({
  
     marginLeft: 8,
     marginRight: 8,
-    marginTop: 25,
+    marginTop: 40,
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomWidth: 1,
