@@ -1,20 +1,24 @@
 import React from "react";
 import { Button, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import firebase from "../../../firebase/config";
 
 const MessageScreen = ({ navigation }) => {
-  const logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => console.log("logout success"))
-      .catch((err) => console.log(err));
-  };
   return (
-    <View>
-      <Text>this is Message screen</Text>
-      <Button title="logout" onPress={logout} />
-    </View>
+    <SafeAreaView
+      style={{ backgroundColor: "black", flex: 1, justifyContent: "center" }}
+    >
+      <Text
+        style={{
+          color: "white",
+          textAlign: "center",
+          fontSize: 30,
+          fontWeight: "bold",
+        }}
+      >
+        Coming soon
+      </Text>
+    </SafeAreaView>
   );
 };
 
