@@ -58,7 +58,14 @@ const MainStack = () => {
       <Stack.Screen
         name="Message"
         component={MessageScreen}
-        options={{ headerTitle: "Message" }}
+        options={{
+          headerTitle: "Message",
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: "black",
+          },
+          headerTintColor: "white",
+        }}
       />
       <Stack.Screen
         name="SettingProfile"
